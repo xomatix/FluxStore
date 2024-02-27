@@ -162,7 +162,7 @@ class OfferController {
         throw `offer with id ${reqBody.id} does not exists`;
       }
       var data = await DBquery(
-        `update o_offer set pp_id = ${reqBody.product_id} , oo_discount = ${reqBody.discount},oo_flag = ${reqBody.flag} where oo_id = ${reqBody.id}` +
+        `update o_offer set pp_id = ${reqBody.product_id} , oo_discount = ${reqBody.discount},oo_flag = ${reqBody.flag} where oo_id = ${reqBody.id} ` +
           `returning oo_id as id, pp_id as product_id, oo_discount as discount, oo_flag as flag;`
       );
       var m = new ResponseModel(data, data.length, 0);
