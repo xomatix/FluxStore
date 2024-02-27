@@ -1,0 +1,18 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "lab.kis.agh.edu.pl:1600 matswie",
+            "Group": "Servers",
+            "Host": "lab.kis.agh.edu.pl",
+            "Port": 1600,
+            "MaintenanceDB": "postgres",
+            "Username": "matswie",
+            "UseSSHTunnel": 0,
+            "KerberosAuthentication": false,
+            "ConnectionParameters": {
+                "sslmode": "require",
+                "connect_timeout": 10
+            }
+        }
+    }
+}
