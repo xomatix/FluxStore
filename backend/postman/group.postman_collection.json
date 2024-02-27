@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "632a58ee-b098-44e5-9d3b-ad47b7e27eaa",
+		"name": "group",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25168915"
+	},
+	"item": [
+		{
+			"name": "product list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/product/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "group list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"mdaskmd\",\r\n   \"code\": \"code_terst\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/group/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"group",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "group add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Opony\",\r\n   \"code\": \"opony\",\r\n   \"flag\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/group/add",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"group",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "group update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n   \"name\": \"Zegarki\",\r\n   \"code\": \"ZegarKi\" ,\r\n   \"flag\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/group/update",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"group",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Casio - G-Shock\",\r\n   \"code\": \"CASIOGS\",\r\n   \"flag\": 0,\r\n   \"group_id\": 2,\r\n   \"quantity\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/product/add",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":1,\r\n   \"name\": \"Casio - G-Shock\",\r\n   \"code\": \"CASIOGS\",\r\n   \"flag\": 0,\r\n   \"quantity\": 15\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/product/update",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product value model list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"data\": {\r\n        \"group_id\":2\r\n    },\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/pvaluemodel/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pvaluemodel",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product value list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_ids\": [1,2,3,4,5]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/pvalue/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pvalue",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product value add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_id\": 1,\r\n    \"model_id\": 1,\r\n    \"value\": \"45\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/pvalue/add",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pvalue",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product value model add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"group_id\": 2,\r\n    \"desc\": \"Rozmiar tarczy zegarka w mm\",\r\n    \"name\": \"Rozmiar tarczy\",\r\n    \"code\": \"ROZMIAR_TARCZY_ZEG\",\r\n    \"flag\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/pvaluemodel/add",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"pvaluemodel",
+						"add"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

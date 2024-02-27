@@ -9,6 +9,7 @@ CREATE TABLE if not exists p_product (
     pp_id SERIAL PRIMARY KEY,
     pp_name VARCHAR(255) NOT NULL,
     pp_code VARCHAR(255) NOT NULL,
+    pp_price Decimal(20,2) not null,
     pp_desc text,
     pg_id INTEGER REFERENCES p_group(pg_id),
     pp_quantity INTEGER NOT null,

@@ -1,4 +1,5 @@
 const { GroupContorller } = require("./controllers/group");
+const { OfferController } = require("./controllers/offer");
 const { ProductController } = require("./controllers/product");
 const { ProductValueController } = require("./controllers/productValue");
 const {
@@ -64,6 +65,20 @@ class ApiRouter {
     });
     this.app.post("/pvalue/delete", (request, response) => {
       ProductValueController.delete(request, response);
+    });
+  };
+  initOfferRoutes = () => {
+    this.app.post("/offer/list", (request, response) => {
+      OfferController.list(request, response);
+    });
+    this.app.post("/offer/add", (request, response) => {
+      OfferController.add(request, response);
+    });
+    this.app.post("/offer/update", (request, response) => {
+      OfferController.update(request, response);
+    });
+    this.app.post("/offer/delete", (request, response) => {
+      OfferController.delete(request, response);
     });
   };
 }
