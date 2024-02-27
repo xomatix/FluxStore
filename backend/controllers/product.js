@@ -16,12 +16,21 @@ class ProductController {
           reqBody.rows
         }`;
       }
+      var idsWhereQuery = "";
+      if (
+        typeof reqBody.ids == typeof [] &&
+        reqBody.ids.length > 0 &&
+        !isNaN(Number(reqBody.ids[0]))
+      ) {
+        idsWhereQuery = ` where pp.pp_id in (${reqBody.ids.join(",")})`;
+      }
       var data = await DBquery(
         `select pp.pp_id as id, pp.pp_name as name, pp.pp_code as code, pp.pp_price as price, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
           `json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
           `from p_product pp ` +
           `left join p_value pv on (pp.pp_id=pv.pp_id) ` +
           `left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
+          ` ${idsWhereQuery} ` +
           `group by pp.pp_id ` +
           `${rowsPageQuery};`
       );

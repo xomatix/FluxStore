@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"raw": "{\r\n    //\"ids\": [3,2],\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
