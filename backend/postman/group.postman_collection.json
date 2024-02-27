@@ -67,7 +67,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"name\": \"Opony\",\r\n   \"code\": \"opony\",\r\n   \"flag\": 0\r\n}",
+					"raw": "{\r\n   \"name\": \"Buty\",\r\n   \"code\": \"BUTY\",\r\n   \"flag\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -121,7 +121,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"name\": \"Casio - G-Shock\",\r\n   \"code\": \"CASIOGS\",\r\n   \"flag\": 0,\r\n   \"group_id\": 2,\r\n   \"quantity\": 10\r\n}",
+					"raw": "{\r\n   \"name\": \"Nike air force\",\r\n   \"code\": \"NIKECW2288-111\",\r\n   \"flag\": 0,\r\n   \"price\": 559.00,\r\n   \"desc\": \"Example shoe description\",\r\n   \"group_id\": 1,\r\n   \"quantity\": 10\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -148,7 +148,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\":1,\r\n   \"name\": \"Casio - G-Shock\",\r\n   \"code\": \"CASIOGS\",\r\n   \"flag\": 0,\r\n   \"quantity\": 15\r\n}",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Nike air force\",\r\n    \"code\": \"NIKECW2288-111\",\r\n    \"price\": \"559.00\",\r\n    \"desc\": \"Example shoe description\",\r\n    \"quantity\": 15,\r\n    \"flag\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -175,7 +175,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"data\": {\r\n        \"group_id\":2\r\n    },\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"raw": "{\r\n    \"data\": {\r\n        \"group_id\":1\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -229,7 +229,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"product_id\": 1,\r\n    \"model_id\": 1,\r\n    \"value\": \"45\"\r\n}",
+					"raw": "{\r\n    \"product_id\": 2,\r\n    \"model_id\": 2,\r\n    \"value\": \"45\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -256,7 +256,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"group_id\": 2,\r\n    \"desc\": \"Rozmiar tarczy zegarka w mm\",\r\n    \"name\": \"Rozmiar tarczy\",\r\n    \"code\": \"ROZMIAR_TARCZY_ZEG\",\r\n    \"flag\": 0\r\n}",
+					"raw": "{\r\n    \"group_id\": 1,\r\n    \"desc\": \"Size of a shoe\",\r\n    \"name\": \"Size\",\r\n    \"code\": \"SSIZE\",\r\n    \"flag\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -270,6 +270,60 @@
 					],
 					"path": [
 						"pvaluemodel",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    //\"ids\": [2,4,5],\r\n    \"filter\": [\r\n        {\"field\": \"price\",\"comparer\": \">\", \"argument\": \"100\"},\r\n        {\"field\": \"price\",\"comparer\": \"<\", \"argument\": \"550\"},\r\n        {\"field\": \"1\",\"comparer\": \"like\", \"argument\": \"%WHITE%\"}       \r\n    ],\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/offer/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"offer",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_id\": 2,\r\n    \"discount\": 5.0,\r\n    \"flag\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/offer/add",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"offer",
 						"add"
 					]
 				}

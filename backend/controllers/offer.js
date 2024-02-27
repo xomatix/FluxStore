@@ -16,14 +16,36 @@ class OfferController {
           reqBody.rows
         }`;
       }
+      var preWhereQuery = this.generateWithPreQueries(reqBody);
+      var postWhereQuery = this.genereateOfferWhereQuery(reqBody);
+      var idsWhereQuery = "";
+      if (
+        typeof reqBody.ids == typeof [] &&
+        reqBody.ids.length > 0 &&
+        !isNaN(Number(reqBody.ids[0]))
+      ) {
+        preWhereQuery = "";
+        postWhereQuery = "";
+        idsWhereQuery = ` where pp.pp_id in (${reqBody.ids.join(",")})`;
+      }
+
       var data = await DBquery(
-        `select pp.pp_id as id,pp.pp_price as price, ROUND((pp.pp_price*((100-oo.oo_discount)/100)),2) as disc_price,oo_discount as discount, pp.pp_name as name, pp.pp_code as code, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
+        ` ${preWhereQuery} ` +
+          `select pp.pp_id as id,pp.pp_price as price, ROUND((pp.pp_price*((100-oo.oo_discount)/100)),2) as disc_price,oo_discount as discount, pp.pp_name as name, pp.pp_code as code, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
           `json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
           `from p_product pp ` +
           `join o_offer oo on (pp.pp_id=oo.pp_id) ` +
           `join p_value pv on (pp.pp_id=pv.pp_id) ` +
           `join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
-          ` ${this.genereateOfferWhereQuery(reqBody)} ` +
+          ` ${idsWhereQuery} ` +
+          ` ${preWhereQuery != "" || postWhereQuery != "" ? "where" : ""}` +
+          ` ${postWhereQuery} ` +
+          ` ${postWhereQuery != "" && preWhereQuery != "" ? " and " : ""}` +
+          ` ${
+            preWhereQuery != ""
+              ? "pp.pp_id in (select * from combined_subquery)"
+              : ""
+          } ` +
           `group by pp.pp_id , oo.oo_discount ` +
           `${rowsPageQuery};`
       );
@@ -35,18 +57,46 @@ class OfferController {
     }
   };
 
+  static generateWithPreQueries = (reqBody) => {
+    if (typeof reqBody.filter != typeof []) return "";
+    var whereQueryElems = [];
+    var i = 0;
+    reqBody.filter.forEach((filterElement) => {
+      var subWithQuery =
+        `subquery${i} as (` +
+        ` SELECT pp.pp_id FROM p_product pp JOIN p_value pv ON pp.pp_id = pv.pp_id JOIN p_value_model pvm ON pv.pvm_id = pvm.pvm_id `;
+      var field = Number(filterElement.field);
+      if (typeof field == typeof 0 && !isNaN(field) && field != 0) {
+        subWithQuery += `WHERE pvm.pvm_id=${field} and pv.pv_value ${filterElement.comparer} '${filterElement.argument}' )`;
+        whereQueryElems.push(subWithQuery);
+        i++;
+      }
+    });
+
+    var combinedSubquery = ` combined_subquery AS (`;
+    for (let index = 0; index < whereQueryElems.length; index++) {
+      combinedSubquery += ` SELECT pp_id FROM subquery${index} `;
+      combinedSubquery += index + 1 < whereQueryElems.length ? " union " : " ";
+    }
+    combinedSubquery += ")";
+    whereQueryElems.push(combinedSubquery);
+    return whereQueryElems.length == 0
+      ? ""
+      : "WITH " + whereQueryElems.join(" , ");
+  };
+
   static genereateOfferWhereQuery = (reqBody) => {
     if (typeof reqBody.filter != typeof []) return "";
-    var whereQuery = "where ";
+    var whereQuery = " ";
     var whereQueryElems = [];
 
     reqBody.filter.forEach((filterElement) => {
       var subQuery = "";
-      var field = resolveDBField(filterElement.field);
+      var field = this.resolveDBField(filterElement.field);
       var comparer = filterElement.comparer;
-      var argument = filterElement.argument; //
-      subQuery += ` (${field} ${comparer} ${argument}) `;
-      whereQueryElems.push(subQuery);
+      var argument = filterElement.argument;
+      subQuery += ` (${field} ${comparer} '${argument}') `;
+      if (field != undefined) whereQueryElems.push(subQuery);
     });
 
     return whereQueryElems.length == 0
@@ -62,12 +112,10 @@ class OfferController {
         return "pp.pg_id";
       case "name":
         return "pp.pp_name";
+      case "quantity":
+        return "pp.pp_quantity";
       default:
         break;
-    }
-    fieldName = Number(fieldName);
-    if (typeof fieldName == typeof fieldName && fieldName != 0) {
-      return ` pvm.pvm_id=${fieldName} and `;
     }
   };
 
