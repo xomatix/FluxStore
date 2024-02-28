@@ -112,8 +112,12 @@ class OfferController {
         return "pp.pg_id";
       case "name":
         return "pp.pp_name";
+      case "code":
+        return "pp.pp_code";
       case "quantity":
         return "pp.pp_quantity";
+      case "flag":
+        return "pp.pp_flag";
       default:
         break;
     }
