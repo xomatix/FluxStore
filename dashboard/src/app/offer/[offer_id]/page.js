@@ -71,7 +71,7 @@ const OfferAddUpdateForm = () => {
       params.offer_id == undefined ||
       isNaN(params.offer_id)
     ) {
-      var inputModel = { ...formData, discount: Number(formData.discount) };
+      var inputModel = { ...formData };
       var response = await OfferController.add(inputModel);
       response = response.data[0].id;
 
