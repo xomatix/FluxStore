@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const EditProduct = (id) => {
-  const [product, setProduct] = useState({
-    id: '',
+const AddProduct = () => {
+ const [product, setProduct] = useState({
     name: '',
     code: '',
     price: '',
@@ -11,66 +10,46 @@ const EditProduct = (id) => {
     group_id: '',
     quantity: '',
     flag: '',
-  });
+ });
+ const [loading, setLoading] = useState(false);
+ const [error, setError] = useState(null);
 
-
-  useEffect(() => {
-    console.log("my id is"+ id);
-    // Fetch product data here and set it to the state
-    // This is a placeholder for your actual fetch logic
-    // You might want to replace this with an actual fetch call to your backend
-    const fetchProductData = async () => {
-      // Simulate fetching product data
-      const fetchedProduct = {
-        id:  2,
-        name: "Nike air force",
-        code: "NIKECW2288-111",
-        price: "559.00",
-        desc: "Example shoe description",
-        group_id:  1,
-        quantity:  10,
-        flag:  0,
-      };
-      setProduct(fetchedProduct);
-    };
-
-    if (id) {
-      fetchProductData();
-    }
-  }, [id]);
-
-  const handleChange = (e) => {
+ const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
-  };
+ };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify(product);
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+    setLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/product/edit/${id}`, requestOptions);
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      const raw = JSON.stringify(product);
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      const response = await fetch('http://localhost:8080/product/add', requestOptions);
       const result = await response.text();
       console.log(result);
       // Handle success (e.g., redirect to product list, show success message)
+      setLoading(false);
     } catch (error) {
       console.error(error);
-      // Handle error (e.g., show error message)
+      setError(error.message);
+      setLoading(false);
     }
-  };
+ };
 
-  return (
+ return (
     <form onSubmit={handleSubmit}>
       <label>
         Name:
@@ -102,7 +81,7 @@ const EditProduct = (id) => {
       </label>
       <button type="submit">Save</button>
     </form>
-  );
+ );
 };
 
-export default EditProduct;
+export default AddProduct;
