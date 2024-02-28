@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 const AddProduct = () => {
+ // State to hold the form data
  const [product, setProduct] = useState({
     name: '',
     code: '',
@@ -11,41 +12,38 @@ const AddProduct = () => {
     quantity: '',
     flag: '',
  });
- const [loading, setLoading] = useState(false);
- const [error, setError] = useState(null);
 
+ // Handler for input changes
  const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
  };
 
+ // Handler for form submission
  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
 
+    // Assuming you have a function to handle the API call
+    // You would replace this with your actual API call logic
     try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      const raw = JSON.stringify(product);
-
-      const requestOptions = {
+      const response = await fetch('http://localhost:8080/product/add', {
         method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-      };
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(product),
+      });
 
-      const response = await fetch('http://localhost:8080/product/add', requestOptions);
-      const result = await response.text();
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
       console.log(result);
-      // Handle success (e.g., redirect to product list, show success message)
-      setLoading(false);
+      // Handle success (e.g., show a success message, redirect)
     } catch (error) {
-      console.error(error);
-      setError(error.message);
-      setLoading(false);
+      console.error('There was a problem with your fetch operation:', error);
+      // Handle error (e.g., show an error message)
     }
  };
 
@@ -79,7 +77,7 @@ const AddProduct = () => {
         Flag:
         <input type="number" name="flag" value={product.flag} onChange={handleChange} />
       </label>
-      <button type="submit">Save</button>
+      <button type="submit">Add Product</button>
     </form>
  );
 };
