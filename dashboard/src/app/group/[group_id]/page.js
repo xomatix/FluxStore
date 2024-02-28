@@ -23,7 +23,6 @@ const GroupAddUpdateForm = () => {
 
   const params = useParams();
   useEffect(() => {
-    //console.log("start of loading data " + params.group_id);
     if (
       params.group_id == null ||
       params.group_id == undefined ||
@@ -53,9 +52,10 @@ const GroupAddUpdateForm = () => {
 
       const vmInputModel = {
         data: {
-          group_id: params.group_id,
+          group_id: Number(params.group_id),
         },
       };
+      console.log(vmInputModel);
       var vmData = await ProductValueModelController.list(vmInputModel);
       vmData = vmData.data;
       //   console.log("Data that i got: " + vmData.id + JSON.stringify(vmData));
