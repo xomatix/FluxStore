@@ -131,7 +131,7 @@ const GroupAddUpdateForm = () => {
       if (valueModelDataForm.name != "" && valueModelDataForm.code != "") {
         await ProductValueModelController.add(valueModelDataForm);
       }
-      //   window.location.href = "/group/" + response;
+      window.location.href = "/group/" + response;
     }
     // console.log(formData);
     // console.log(valueModelData);
