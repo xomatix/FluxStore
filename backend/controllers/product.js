@@ -138,7 +138,8 @@ class ProductController {
         throw `can't change group_id correct request format`;
       }
       var data = await DBquery(
-        `update p_product set pp_name = '${reqBody.name}' , pp_code = upper('${reqBody.code}') , pp_quantity = ${reqBody.quantity},pp_flag = ${reqBody.flag}, pp_desc = '${reqBody.desc}', pp_price = ${reqBody.price} where pp_id = ${reqBody.id} ` +
+        // `update p_product set pp_name = '${reqBody.name}' , pp_code = upper('${reqBody.code}') , pp_quantity = ${reqBody.quantity},pp_flag = ${reqBody.flag}, pp_desc = '${reqBody.desc}', pp_price = ${reqBody.price} where pp_id = ${reqBody.id} ` +
+        `update p_product set pp_name = '${reqBody.name}' , pp_code = upper('${reqBody.code}') , pp_quantity = ${reqBody.quantity},pp_flag = ${reqBody.flag}, pp_price = ${reqBody.price} where pp_id = ${reqBody.id} ` +
           `returning pp_id as id, pp_name as name, pp_code as code, pp_desc as desc, pp_price as price , pg_id as group_id, pp_quantity as quantity, pp_flag as flag;`
       );
       var m = new ResponseModel(data, data.length, 0);

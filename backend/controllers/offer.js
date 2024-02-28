@@ -35,8 +35,8 @@ class OfferController {
           `json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
           `from p_product pp ` +
           `join o_offer oo on (pp.pp_id=oo.pp_id) ` +
-          `join p_value pv on (pp.pp_id=pv.pp_id) ` +
-          `join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
+          `left join p_value pv on (pp.pp_id=pv.pp_id) ` +
+          `left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
           ` ${idsWhereQuery} ` +
           ` ${preWhereQuery != "" || postWhereQuery != "" ? "where" : ""}` +
           ` ${postWhereQuery} ` +
@@ -79,7 +79,8 @@ class OfferController {
       combinedSubquery += index + 1 < whereQueryElems.length ? " union " : " ";
     }
     combinedSubquery += ")";
-    whereQueryElems.push(combinedSubquery);
+    if (whereQueryElems.length > 0) whereQueryElems.push(combinedSubquery);
+
     return whereQueryElems.length == 0
       ? ""
       : "WITH " + whereQueryElems.join(" , ");
