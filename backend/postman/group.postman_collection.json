@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"name\": \"mdaskmd\",\r\n   \"code\": \"code_terst\" \r\n}",
+					"raw": "{\r\n    //\"ids\": [1],\r\n   \"name\": \"mdaskmd\",\r\n   \"code\": \"code_terst\" \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

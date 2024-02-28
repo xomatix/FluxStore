@@ -168,47 +168,49 @@ const GroupAddUpdateForm = () => {
           <h3>
             <b>Product Value Model</b>
           </h3>
-          {valueModelData.map((x, i) => {
-            return (
-              <>
-                <label>
-                  name:
-                  <input
-                    type="text"
-                    name="name"
-                    value={valueModelData[i].name}
-                    onChange={(e) => handleChangeValueModel(e, i)}
-                  />
-                </label>
-                <label>
-                  code:
-                  <input
-                    readOnly={true}
-                    type="text"
-                    name="code"
-                    value={valueModelData[i].code}
-                    onChange={(e) => handleChangeValueModel(e, i)}
-                  />
-                </label>
-                <label>
-                  desc:
-                  <input
-                    type="text"
-                    name="desc"
-                    value={valueModelData[i].desc}
-                    onChange={(e) => handleChangeValueModel(e, i)}
-                  />
-                </label>
-                <button
-                  className="button-red"
-                  onClick={(e) => handleDelete(e, i)}
-                >
-                  Delete 🗑️
-                </button>
-                <hr />
-              </>
-            );
-          })}
+          <div className="cards-container">
+            {valueModelData.map((x, i) => {
+              return (
+                <div className="card">
+                  <label>
+                    name:
+                    <input
+                      type="text"
+                      name="name"
+                      value={valueModelData[i].name}
+                      onChange={(e) => handleChangeValueModel(e, i)}
+                    />
+                  </label>
+                  <label>
+                    code:
+                    <input
+                      readOnly={true}
+                      type="text"
+                      name="code"
+                      value={valueModelData[i].code}
+                      onChange={(e) => handleChangeValueModel(e, i)}
+                    />
+                  </label>
+                  <label>
+                    desc:
+                    <textarea
+                      type="text"
+                      name="desc"
+                      value={valueModelData[i].desc}
+                      onChange={(e) => handleChangeValueModel(e, i)}
+                    />
+                  </label>
+                  <button
+                    className="button-red"
+                    onClick={(e) => handleDelete(e, i)}
+                  >
+                    Delete 🗑️
+                  </button>
+                  <hr />
+                </div>
+              );
+            })}
+          </div>
         </>
       )}
       {typeof Number(valueModelDataForm.group_id) == typeof 0 &&
@@ -238,7 +240,7 @@ const GroupAddUpdateForm = () => {
             </label>
             <label>
               desc:
-              <input
+              <textarea
                 type="text"
                 name="desc"
                 value={valueModelDataForm.desc}

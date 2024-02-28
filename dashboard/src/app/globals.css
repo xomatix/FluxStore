@@ -16,7 +16,7 @@ form {
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
-input[type="text"], input[type="submit"] {
+input[type="text"], textarea, input[type="submit"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -88,4 +88,17 @@ input[type="submit"]:hover {
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 8px; 
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  flex: 0 0 calc(50% - 40px);
+  margin-bottom: 20px;
+  padding: 20px;
+  /* Add other styles for your card */
 }
