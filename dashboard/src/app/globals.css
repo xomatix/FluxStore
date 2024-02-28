@@ -8,7 +8,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
-form {
+form , .form{
   background: white;
   padding: 20px;
   min-width: 35vw;
@@ -16,12 +16,16 @@ form {
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
-input[type="text"], textarea, input[type="submit"] {
+input[type="text"],input[type="number"], textarea, input[type="submit"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+label {
+  width: 100%;
 }
 
 input[type="submit"] {
@@ -63,8 +67,8 @@ input[type="submit"]:hover {
 }
 
 .button-green {
-  background-color: #90ee90; /* This is a light green color */
-  color: black;
+  background-color: #45a049;
+  color: white;
   border: none;
   padding: 10px 20px;
   text-align: center;
@@ -102,3 +106,60 @@ input[type="submit"]:hover {
   padding: 20px;
   /* Add other styles for your card */
 }
+
+.overlay-parent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh; /* This makes the parent div take up the full viewport height */
+  width: 100vw; /* This makes the parent div take up the full viewport width */
+  background-color: #42424285;
+ }
+ 
+ .centered-list {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Additional styling for your list */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ }
+
+ .divTable {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0 5px;
+  border: 1px solid transparent;
+ }
+ 
+ .divTable .row {
+  display: table-row;
+ }
+ 
+ .divTable .cell {
+  display: table-cell;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+ }
+ 
+ .divTable .row:hover {
+  background-color: rgba(162, 216, 242, 0.14);
+ }
+ 
+ .divTable .cell:hover {
+  background-color: rgba(162, 216, 242, 0.14);
+  border: 1px solid rgba(124, 204, 243, 0.58);
+ }
+
+ .link-input {
+  color: #1d41b9;
+ }
+ 
+ .link-input:hover {
+  text-decoration: underline;
+  cursor: pointer;
+ }
