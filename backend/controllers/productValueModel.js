@@ -103,10 +103,10 @@ class ProductValueModelController {
         throw "no id provided";
       }
       var exists = await DBquery(
-        `SELECT count(*)>0 as exists FROM p_product WHERE pvm_id = ${reqBody.id};`
+        `SELECT count(*)>0 as exists FROM p_value_model pvm where pvm.pvm_id = ${reqBody.id};`
       );
       if (exists.length < 1 || !exists[0].exists) {
-        throw `product with id ${reqBody.id} does not exists`;
+        throw `product value model with id ${reqBody.id} does not exists`;
       }
       if (
         reqBody.flag == undefined ||
@@ -124,7 +124,7 @@ class ProductValueModelController {
         throw `can't change group_id correct request format`;
       }
       var data = await DBquery(
-        `update p_value_model set pvm_name = '${reqBody.name}' , pvm_code = upper('${reqBody.code}') , pvm_desc = ${reqBody.desc},pvm_flag = ${reqBody.flag} ` +
+        `update p_value_model set pvm_name = '${reqBody.name}' , pvm_code = upper('${reqBody.code}') , pvm_desc = '${reqBody.desc}',pvm_flag = ${reqBody.flag} where pvm_id = ${reqBody.id} ` +
           `returning pvm_id as id, pvm_name as name, pvm_code as code , pg_id as group_id, pvm_desc as desc, pvm_flag as flag;`
       );
       var m = new ResponseModel(data, data.length, 0);

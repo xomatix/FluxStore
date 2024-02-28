@@ -1,6 +1,6 @@
 const { baseApiUri } = require("./constants");
 
-class GroupController {
+class ProductValueModelController {
   static list = async (inputModel) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -15,7 +15,7 @@ class GroupController {
     };
 
     var response = {};
-    await fetch(baseApiUri + "/group/list", requestOptions)
+    await fetch(baseApiUri + "/pvaluemodel/list", requestOptions)
       .then((response) => response.text())
       .then((result) => (response = JSON.parse(result)))
       .catch((error) => {
@@ -38,7 +38,7 @@ class GroupController {
     };
 
     var response = {};
-    await fetch(baseApiUri + "/group/add", requestOptions)
+    await fetch(baseApiUri + "/pvaluemodel/add", requestOptions)
       .then((response) => response.text())
       .then((result) => (response = JSON.parse(result)))
       .catch((error) => {
@@ -62,7 +62,7 @@ class GroupController {
     };
 
     var response = {};
-    await fetch(baseApiUri + "/group/update", requestOptions)
+    await fetch(baseApiUri + "/pvaluemodel/update", requestOptions)
       .then((response) => response.text())
       .then((result) => (response = JSON.parse(result)))
       .catch((error) => {
@@ -74,5 +74,5 @@ class GroupController {
 }
 
 module.exports = {
-  GroupController,
+  ProductValueModelController,
 };
