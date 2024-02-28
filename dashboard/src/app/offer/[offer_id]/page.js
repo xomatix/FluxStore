@@ -1,7 +1,7 @@
 "use client";
-import SelectGroup from "@/app/group/select/page";
+
 import SelectProduct from "@/app/product/select/page";
-import SelectIdComponent from "@/components/selectIdComponent";
+import { OfferController } from "@/controllers/offerController";
 import { ProductController } from "@/controllers/productcontroller";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -11,6 +11,7 @@ const OfferAddUpdateForm = () => {
     id: 0,
     product_id: 0,
     discount: 0.0,
+    disc_price: 0.0,
     flag: 0,
   });
 
@@ -26,7 +27,26 @@ const OfferAddUpdateForm = () => {
 
   useEffect(() => {
     async function fetchData() {
-      console.log("pop " + params.offer_id);
+      var data = await OfferController.list({ ids: [Number(params.offer_id)] });
+      data = data.data[0];
+      setFormData({
+        ...formData,
+        id: data.id,
+        product_id: data.product_id,
+        discount: data.discount,
+        disc_price: data.disc_price,
+        flag: data.flag,
+      });
+      setProduct({
+        ...product,
+        id: data.product_id,
+        name: data.name,
+        code: data.code,
+        flag: data.product_flag,
+        quantity: data.quantity,
+        price: data.price,
+      });
+      //fetchProductData(data.product_id);
     }
     fetchData();
   }, []);
@@ -43,9 +63,33 @@ const OfferAddUpdateForm = () => {
     });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    params.offer_id = Number(params.offer_id);
+    if (
+      params.offer_id == null ||
+      params.offer_id == undefined ||
+      isNaN(params.offer_id)
+    ) {
+      var inputModel = { ...formData, discount: Number(formData.discount) };
+      var response = await OfferController.add(inputModel);
+      response = response.data[0].id;
+
+      window.location.href = "/offer/" + response;
+    }
+
+    if (
+      typeof params.offer_id == typeof 0 &&
+      params.offer_id != undefined &&
+      !isNaN(params.offer_id)
+    ) {
+      var inputModel = { ...formData, discount: Number(formData.discount) };
+      var response = await OfferController.update(inputModel);
+      response = response.data[0].id;
+
+      window.location.href = "/offer/" + response;
+    }
+    // console.log(formData);
   };
 
   const handleChange = (e) => {
@@ -55,6 +99,16 @@ const OfferAddUpdateForm = () => {
   const handleProductSelect = (value) => {
     setFormData({ ...formData, product_id: value });
     fetchProductData(value);
+  };
+
+  const handleProductRedirect = (e) => {
+    e.preventDefault();
+    if (formData.product_id == 0) return;
+    window.open(
+      `/product/update/${formData.product_id}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
@@ -71,7 +125,14 @@ const OfferAddUpdateForm = () => {
       </label>
       <label>
         code:
-        <input readOnly={true} type="text" name="code" value={product.code} />
+        <input
+          className={"link-input"}
+          onClick={(e) => handleProductRedirect(e)}
+          readOnly={true}
+          type="text"
+          name="code"
+          value={product.code}
+        />
       </label>
       <label>
         base price:
@@ -92,6 +153,20 @@ const OfferAddUpdateForm = () => {
           type="number"
           name="discount"
           value={formData.discount}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Price after discount:
+        <input
+          readOnly={true}
+          type="number"
+          name="disc_price"
+          value={
+            Math.round(
+              100 * product.price * ((100 - formData.discount) / 100)
+            ) / 100
+          }
           onChange={handleChange}
         />
       </label>

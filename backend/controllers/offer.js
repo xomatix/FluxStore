@@ -26,12 +26,12 @@ class OfferController {
       ) {
         preWhereQuery = "";
         postWhereQuery = "";
-        idsWhereQuery = ` where pp.pp_id in (${reqBody.ids.join(",")})`;
+        idsWhereQuery = ` where oo.oo_id in (${reqBody.ids.join(",")})`;
       }
 
       var data = await DBquery(
         ` ${preWhereQuery} ` +
-          `select pp.pp_id as id,pp.pp_price as price, ROUND((pp.pp_price*((100-oo.oo_discount)/100)),2) as disc_price,oo_discount as discount, pp.pp_name as name, pp.pp_code as code, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
+          `select oo.oo_id as id, pp.pp_id as product_id,pp.pp_price as price, ROUND((pp.pp_price*((100-oo.oo_discount)/100)),2) as disc_price,oo_discount as discount, pp.pp_name as name, pp.pp_code as code, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, oo.oo_flag as flag, pp.pp_flag as product_flag, ` +
           `json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
           `from p_product pp ` +
           `join o_offer oo on (pp.pp_id=oo.pp_id) ` +
@@ -46,7 +46,7 @@ class OfferController {
               ? "pp.pp_id in (select * from combined_subquery)"
               : ""
           } ` +
-          `group by pp.pp_id , oo.oo_discount ` +
+          `group by pp.pp_id , oo.oo_discount, oo.oo_id ` +
           `${rowsPageQuery};`
       );
       var m = new ResponseModel(data, data.length, reqBody.page);
