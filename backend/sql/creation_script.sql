@@ -35,6 +35,6 @@ CREATE table if not exists  p_value (
 CREATE table if not exists  o_offer (
     oo_id SERIAL PRIMARY KEY,
     pp_id INTEGER REFERENCES p_product(pp_id),
-    oo_discount decimal(3,2) NOT NULL,
+    oo_discount decimal NOT NULL,
     oo_flag INTEGER not NULL
 );

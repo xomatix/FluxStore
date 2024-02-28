@@ -92,17 +92,32 @@ class OfferController {
     var whereQueryElems = [];
 
     reqBody.filter.forEach((filterElement) => {
-      var subQuery = "";
       var field = this.resolveDBField(filterElement.field);
-      var comparer = filterElement.comparer;
-      var argument = filterElement.argument;
-      subQuery += ` (${field} ${comparer} '${argument}') `;
-      if (field != undefined) whereQueryElems.push(subQuery);
+      if (field != "") {
+        var subQuery = "";
+        var comparer = this.clearQuery(filterElement.comparer);
+        var argument = this.clearQuery(filterElement.argument);
+
+        var prepQuery = ` (${field} ${comparer} '${argument}') `;
+
+        subQuery += prepQuery;
+        if (field != undefined) whereQueryElems.push(subQuery);
+      }
     });
 
     return whereQueryElems.length == 0
       ? ""
       : whereQuery + whereQueryElems.join(" and ");
+  };
+
+  static clearQuery = (sqlString) => {
+    sqlString.replace("\\", "\\\\");
+    sqlString.replace('"', '\\"');
+    sqlString.replace("`", "\\`");
+    sqlString.replace("'", "\\'");
+    sqlString.replace(";", "\\;");
+    sqlString.replace("%", "\\%");
+    return sqlString;
   };
 
   static resolveDBField = (fieldName) => {
@@ -120,7 +135,7 @@ class OfferController {
       case "flag":
         return "pp.pp_flag";
       default:
-        break;
+        return "";
     }
   };
 
@@ -130,8 +145,9 @@ class OfferController {
       if (
         reqBody.discount == undefined ||
         reqBody.discount == null ||
-        typeof reqBody.discount != typeof 0
+        typeof Number(reqBody.discount) != typeof 0
       ) {
+        console.log("--------test :" + typeof Number(reqBody.discount));
         throw `no discount provided or not correct format (DECIMAL(3,2))`;
       }
 
