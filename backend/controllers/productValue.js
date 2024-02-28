@@ -131,17 +131,17 @@ class ProductValueController {
         throw "no id provided";
       }
       var exists = await DBquery(
-        `SELECT count(*)>0 as exists FROM p_value WHERE pv_id = ${reqBody.id};`
+        `SELECT count(*)>0 as exists FROM p_value WHERE pvm_id = ${reqBody.model_id};`
       );
       if (exists.length < 1 || !exists[0].exists) {
         throw `p value with id ${reqBody.id} does not exists`;
       }
       var data = await DBquery(
-        `delete from p_value where pv_id = ${reqBody.id} `
+        `delete from p_value where pvm_id = ${reqBody.model_id} `
       );
       response
         .status(200)
-        .send(`product value model with id = ${reqBody.id} deleted`);
+        .send(`product value with id = ${reqBody.id} deleted`);
     } catch (error) {
       console.error(error);
       response.status(500).send(error);

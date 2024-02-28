@@ -148,7 +148,10 @@ class ProductValueModelController {
         throw `p value model with id ${reqBody.id} does not exists`;
       }
       var data = await DBquery(
-        `delete from p_value_model where pvm_id = ${reqBody.id} `
+        `begin;` +
+          `delete from p_value where pvm_id = ${reqBody.id};` +
+          `delete from p_value_model where pvm_id = ${reqBody.id} ;` +
+          `commit;`
       );
       response
         .status(200)

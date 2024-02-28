@@ -89,7 +89,8 @@ class GroupContorller {
         throw `no flag provided or not correct format (INT)`;
       }
       var data = await DBquery(
-        `update p_group set pg_name = '${reqBody.name}', pg_code = upper('${reqBody.code}'), pg_flag = ${reqBody.flag} where pg_id = ${reqBody.id} ` +
+        `update p_group set pg_name = '${reqBody.name}', pg_flag = ${reqBody.flag} where pg_id = ${reqBody.id} ` +
+          // `update p_group set pg_name = '${reqBody.name}', pg_code = upper('${reqBody.code}'), pg_flag = ${reqBody.flag} where pg_id = ${reqBody.id} ` +
           `returning pg_id as id, pg_name as name, pg_code as code, pg_flag as flag;`
       );
       var m = new ResponseModel(data, data.length, 0);

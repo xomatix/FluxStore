@@ -17,6 +17,7 @@ const GroupAddUpdateForm = () => {
   const [valueModelDataForm, setValueModelDataForm] = useState({
     name: "",
     code: "",
+    desc: "",
     flag: 0,
   });
 
@@ -45,6 +46,11 @@ const GroupAddUpdateForm = () => {
         code: data.code,
       });
 
+      setValueModelDataForm({
+        ...valueModelDataForm,
+        group_id: data.id,
+      });
+
       const vmInputModel = {
         data: {
           group_id: params.group_id,
@@ -68,6 +74,21 @@ const GroupAddUpdateForm = () => {
     var oldData = valueModelData;
     oldData[i][e.target.name] = e.target.value;
     setValueModelData([...oldData]);
+  };
+
+  const handleChangeValueModelForm = (e) => {
+    setValueModelDataForm({
+      ...valueModelDataForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleDelete = (e, i) => {
+    if (confirm("Are you sure u want to delete this value model?")) {
+      var inputModel = { id: valueModelData[i].id };
+      ProductValueModelController.delete(inputModel);
+      window.location.href = window.location.href;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -107,10 +128,13 @@ const GroupAddUpdateForm = () => {
         await ProductValueModelController.update(vmInputModel);
       });
 
-      window.location.href = "/group/" + response;
+      if (valueModelDataForm.name != "" && valueModelDataForm.code != "") {
+        await ProductValueModelController.add(valueModelDataForm);
+      }
+      //   window.location.href = "/group/" + response;
     }
-    console.log(formData);
-    console.log(valueModelData);
+    // console.log(formData);
+    // console.log(valueModelData);
   };
 
   return (
@@ -128,9 +152,9 @@ const GroupAddUpdateForm = () => {
         Code:
         <input
           readOnly={
-            typeof params.group_id == typeof 0 &&
-            params.group_id != undefined &&
-            !isNaN(params.group_id)
+            typeof Number(valueModelDataForm.group_id) == typeof 0 &&
+            Number(valueModelDataForm.group_id) != undefined &&
+            !isNaN(Number(valueModelDataForm.group_id))
           }
           type="text"
           name="code"
@@ -175,14 +199,21 @@ const GroupAddUpdateForm = () => {
                     onChange={(e) => handleChangeValueModel(e, i)}
                   />
                 </label>
+                <button
+                  className="button-red"
+                  onClick={(e) => handleDelete(e, i)}
+                >
+                  Delete 🗑️
+                </button>
+                <hr />
               </>
             );
           })}
         </>
       )}
-      {typeof Number(params.group_id) == typeof 0 &&
-        Number(params.group_id) != undefined &&
-        !isNaN(Number(params.group_id)) && (
+      {typeof Number(valueModelDataForm.group_id) == typeof 0 &&
+        Number(valueModelDataForm.group_id) != undefined &&
+        !isNaN(Number(valueModelDataForm.group_id)) && (
           <>
             <h3>
               <b>Add Product Value Model</b>
@@ -193,7 +224,7 @@ const GroupAddUpdateForm = () => {
                 type="text"
                 name="name"
                 value={valueModelDataForm.name}
-                onChange={handleChangeValueModel}
+                onChange={handleChangeValueModelForm}
               />
             </label>
             <label>
@@ -202,7 +233,16 @@ const GroupAddUpdateForm = () => {
                 type="text"
                 name="code"
                 value={valueModelDataForm.code}
-                onChange={handleChange}
+                onChange={handleChangeValueModelForm}
+              />
+            </label>
+            <label>
+              desc:
+              <input
+                type="text"
+                name="desc"
+                value={valueModelDataForm.desc}
+                onChange={handleChangeValueModelForm}
               />
             </label>
           </>
