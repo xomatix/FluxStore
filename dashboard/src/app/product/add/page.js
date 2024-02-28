@@ -1,51 +1,45 @@
 "use client";
+import { ProductController } from '@/controllers/productcontroller';
 import { useState } from 'react';
 
 const AddProduct = () => {
- // State to hold the form data
  const [product, setProduct] = useState({
     name: '',
     code: '',
-    price: '',
+    price: 0,
     desc: '',
-    group_id: '',
-    quantity: '',
-    flag: '',
+    group_id: 0,
+    quantity: 0,
+    flag: 0,
  });
 
- // Handler for input changes
  const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
  };
 
- // Handler for form submission
  const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Assuming you have a function to handle the API call
-    // You would replace this with your actual API call logic
-    try {
-      const response = await fetch('http://localhost:8080/product/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(product),
-      });
+  if (typeof product.group_id === 'string') {
+    product.group_id = parseInt(product.group_id, 10);
+  }
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json();
-      console.log(result);
-      // Handle success (e.g., show a success message, redirect)
-    } catch (error) {
-      console.error('There was a problem with your fetch operation:', error);
-      // Handle error (e.g., show an error message)
-    }
+  if (typeof product.price === 'string') {
+    product.price = parseFloat(product.price);
+  }
+  
+  try {
+     console.log(JSON.stringify(product));
+     const response = await ProductController.add(product); // Directly pass the product object
+     // Handle the result here, e.g., show a success message or update the product list
+     console.log('Product added successfully:', response);
+  } catch (error) {
+     console.error('Error adding product:', error);
+     // Handle errors, e.g., show an error message to the user
+  }
  };
+ 
 
  return (
     <form onSubmit={handleSubmit}>
