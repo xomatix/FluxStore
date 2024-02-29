@@ -1,16 +1,17 @@
 "use client";
 import { GroupController } from "@/controllers/groupController";
 import { ProductValueController } from "@/controllers/productValueController";
-import { ProductController } from '@/controllers/productcontroller';
+import { ProductValueModelController } from "@/controllers/productValueModelController";
+import { ProductController } from "@/controllers/productcontroller";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProductUpdate = () => {
   const [product, setProductData] = useState({
-    name: '',
-    code: '',
+    name: "",
+    code: "",
     price: 0,
-    desc: '',
+    desc: "",
     group_id: 0,
     quantity: 0,
     flag: 0,
@@ -37,7 +38,7 @@ const ProductUpdate = () => {
       var data = await ProductController.list(inputModel);
       data = data.data[0];
       if (data == null || data == undefined) return;
-
+      var product_id = data.id;
       setProductData({
         id: data.id,
         name: data.name,
@@ -48,8 +49,7 @@ const ProductUpdate = () => {
         group_id: data.group_id,
         flag: data.flag,
       });
-      
-      setValueModelData(data.valuelist);
+
       const groupInputModel = {
         ids: [data.group_id],
       };
@@ -69,10 +69,36 @@ const ProductUpdate = () => {
           group_id: Number(groupData.id),
         },
       };
-      var vmData = await ProductValueController.list(vmInputModel);
+      var vmData = await ProductValueModelController.list(vmInputModel);
       vmData = vmData.data;
-      if (vmData == null || vmData == undefined) return;
-      setValueModelData(vmData);
+
+      var filledValues = data.valuelist;
+      for (let index = 0; index < filledValues.length; index++) {
+        if (filledValues[index].model_id == null) {
+          filledValues.splice(index, 1);
+        }
+      }
+
+      vmData.forEach((valueModelElement) => {
+        var isFilled = false;
+        filledValues.forEach((valueElement) => {
+          valueElement.product_id = product_id;
+          if (valueModelElement.id == valueElement.model_id) {
+            isFilled = true;
+          }
+        });
+        if (isFilled == false) {
+          var valueModel = {
+            ...valueModelElement,
+            model_id: valueModelElement.id,
+            product_id: product_id,
+            value: "",
+          };
+          filledValues.push(valueModel);
+        }
+      });
+
+      setValueModelData(filledValues);
     }
     fetchData();
   }, []);
@@ -81,20 +107,16 @@ const ProductUpdate = () => {
     setProductData({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleChangeGroup = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleChangeValueModel = (e, i) => {
     e.preventDefault();
     const newValueModelData = [...valueModelData];
     newValueModelData[i][e.target.name] = e.target.value;
     setValueModelData(newValueModelData);
-   };
-  
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     params.product_id = Number(params.product_id);
     if (
       typeof params.product_id == typeof 0 &&
@@ -105,120 +127,114 @@ const ProductUpdate = () => {
       inputModel.group_id = null;
       var response = await ProductController.update(inputModel);
       response = response.data[0].id;
-  
+
+      valueModelData.forEach(async (element) => {
+        var vmInputModel = {
+          ...element,
+        };
+        // console.log(vmInputModel);
+        await ProductValueController.add(vmInputModel);
+      });
+
       window.location.href = "/product/update/" + response;
     }
     console.log(product);
-  
-    if (
-      typeof params.group_id == typeof 0 &&
-      params.group_id != undefined &&
-      !isNaN(params.group_id)
-    ) {
-      var inputModel = formData;
-      var response = await GroupController.update(inputModel);
-      response = response.data[0].id;
-    
-      valueModelData.forEach(async (element) => {
-        var vmInputModel = {
-          id: element.id,
-          name: element.name,
-          code: element.code,
-          desc: element.desc,
-          flag: element.flag,
-        };
-        console.log(vmInputModel);
-        await ProductValueController.add(vmInputModel);
-      });
-    
-      if (valueModelData.name != "" && valueModelData.code != "") {
-        await ProductValueController.add(valueModelData);
-      }
-      window.location.href = "/product/update/" + response;
-    }
   };
-  
+
+  const handleGroupRedirect = (e) => {
+    e.preventDefault();
+    if (formData.id == 0) return;
+    window.open(`/group/${formData.id}`, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
         Name:
-        <input type="text" name="name" value={product.name} onChange={handleChange} />
+        <input
+          type="text"
+          name="name"
+          value={product.name}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Code:
-        <input readOnly={true} type="text" name="code" value={product.code} onChange={handleChange} />
+        <input
+          readOnly={true}
+          type="text"
+          name="code"
+          value={product.code}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Price:
-        <input type="text" name="price" value={product.price} onChange={handleChange} />
-       </label>
-       <label>
-         Description:
-         <textarea name="desc" value={product.desc} onChange={handleChange} />
-       </label>
-       <label>
-         Quantity:
-         <input type="number" name="quantity" value={product.quantity} onChange={handleChange} />
-       </label>
-       <label>
-         Flag:
-         <input type="number" name="flag" value={product.flag} onChange={handleChange} />
-       </label>
-       <label>
-         Group name:
-         <input
-           readOnly={true}
-           type="text"
-           name="name"
-           value={formData.name}
-           onChange={handleChangeGroup}
-         />
-       </label>
-       <label>
-         Group Code:
-         <input
-           readOnly={true}
-           type="text"
-           name="code"
-           value={formData.code}
-         />
-       </label>
-   
-       <h3>
-         <b>Product Value Model</b>
-       </h3>
-       <div className="cards-container">
-         {valueModelData.map((x, i) => (
-           <div key={i} className="card">
-             <label>
-               Name:
-               <input
-                 readOnly={true}
-                 type="text"
-                 name="name"
-                 value={x.name}
-               />
-             </label>
-             <label>
-               Value:
-               <input
-                 type="text"
-                 name="value"
-                 value={x.value}
-                 onChange={(e) => handleChangeValueModel(e, i)}
-               />
-             </label>
-           </div>
-         ))}
-       </div>
-   
-       <button type="submit">Update Product</button>
+        <input
+          type="text"
+          name="price"
+          value={product.price}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Description:
+        <textarea name="desc" value={product.desc} onChange={handleChange} />
+      </label>
+      <label>
+        Quantity:
+        <input
+          type="number"
+          name="quantity"
+          value={product.quantity}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Flag:
+        <input
+          type="number"
+          name="flag"
+          value={product.flag}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Group:
+        <input
+          className={"link-input"}
+          readOnly={true}
+          type="text"
+          name="code"
+          value={`${formData.name} - ${formData.code}`}
+          onClick={handleGroupRedirect}
+        />
+      </label>
+
+      <h3>
+        <b>Product Values</b>
+      </h3>
+      <div className="cards-container">
+        {valueModelData.map((x, i) => (
+          <div key={i} className="card">
+            <label>
+              {x.name}:
+              <input
+                type="text"
+                name="value"
+                value={x.value}
+                onChange={(e) => handleChangeValueModel(e, i)}
+              />
+            </label>
+          </div>
+        ))}
+      </div>
+
+      <button className="button-green" type="submit">
+        Update Product
+      </button>
     </form>
-   );
-   
+  );
 };
-
-
 
 export default ProductUpdate;
