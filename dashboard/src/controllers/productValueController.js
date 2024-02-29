@@ -1,6 +1,6 @@
 const { baseApiUri } = require("./constants");
 
-class ProductValueModelController {
+class ProductValueController {
   static list = async (inputModel) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -98,5 +98,5 @@ class ProductValueModelController {
 }
 
 module.exports = {
-  ProductValueModelController,
+  ProductValueController,
 };
