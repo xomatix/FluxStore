@@ -87,10 +87,10 @@ const ProductUpdate = () => {
 
   const handleChangeValueModel = (e, i) => {
     e.preventDefault();
-    var oldData = valueModelData;
-    oldData[i][e.target.name] = e.target.value;
-    setValueModelData([...oldData]);
-  };
+    const newValueModelData = [...valueModelData];
+    newValueModelData[i][e.target.name] = e.target.value;
+    setValueModelData(newValueModelData);
+   };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,11 +128,11 @@ const ProductUpdate = () => {
           flag: element.flag,
         };
         console.log(vmInputModel);
-        await ProductValueController.update(vmInputModel); // Use update from ProductValueController
+        await ProductValueController.add(vmInputModel);
       });
     
       if (valueModelData.name != "" && valueModelData.code != "") {
-        await ProductValueController.add(valueModelData); // Use add from ProductValueController
+        await ProductValueController.add(valueModelData);
       }
       window.location.href = "/product/update/" + response;
     }
@@ -152,75 +152,71 @@ const ProductUpdate = () => {
       <label>
         Price:
         <input type="text" name="price" value={product.price} onChange={handleChange} />
-      </label>
-      <label>
-        Description:
-        <textarea name="desc" value={product.desc} onChange={handleChange} />
-      </label>
-      <label>
-        Quantity:
-        <input type="number" name="quantity" value={product.quantity} onChange={handleChange} />
-      </label>
-      <label>
-        Flag:
-        <input type="number" name="flag" value={product.flag} onChange={handleChange} />
-      </label>
-      <label>
-        Group name:
-        <input
-          readOnly={true}
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChangeGroup}
-        />
-      </label>
-      <label>
-        Group Code:
-        <input
-          readOnly={true}
-          type="text"
-          name="code"
-          value={formData.code}
-        />
-      </label>
-
-
-  <>
-    <h3>
-      <b>Product Value Model</b>
-    </h3>
-    <div className="cards-container">
-      {valueModelData.map((x, i) => {
-        return (
-          <div className="card">
-            <label>
-              Name:
-              <input
-                readOnly={true}
-                type="text"
-                name="name"
-                value={x.name}
-              />
-            </label>
-            <label>
-              Value:
-              <input
-                type="text"
-                name="value"
-                value={x.value}
-                onChange={(e) => handleChangeValueModel(e, i)}
-              />
-            </label>
-          </div>
-        );
-      })}
-    </div>
-  </>
-
-      <button type="submit">Update Product</button>
+       </label>
+       <label>
+         Description:
+         <textarea name="desc" value={product.desc} onChange={handleChange} />
+       </label>
+       <label>
+         Quantity:
+         <input type="number" name="quantity" value={product.quantity} onChange={handleChange} />
+       </label>
+       <label>
+         Flag:
+         <input type="number" name="flag" value={product.flag} onChange={handleChange} />
+       </label>
+       <label>
+         Group name:
+         <input
+           readOnly={true}
+           type="text"
+           name="name"
+           value={formData.name}
+           onChange={handleChangeGroup}
+         />
+       </label>
+       <label>
+         Group Code:
+         <input
+           readOnly={true}
+           type="text"
+           name="code"
+           value={formData.code}
+         />
+       </label>
+   
+       <h3>
+         <b>Product Value Model</b>
+       </h3>
+       <div className="cards-container">
+         {valueModelData.map((x, i) => (
+           <div key={i} className="card">
+             <label>
+               Name:
+               <input
+                 readOnly={true}
+                 type="text"
+                 name="name"
+                 value={x.name}
+               />
+             </label>
+             <label>
+               Value:
+               <input
+                 type="text"
+                 name="value"
+                 value={x.value}
+                 onChange={(e) => handleChangeValueModel(e, i)}
+               />
+             </label>
+           </div>
+         ))}
+       </div>
+   
+       <button type="submit">Update Product</button>
     </form>
-  );
+   );
+   
 };
 
 
