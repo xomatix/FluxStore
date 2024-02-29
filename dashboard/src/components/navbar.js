@@ -18,6 +18,10 @@ const Navbar = () => {
   const toggleNavbar = () => {
     setIsOpen((prevVisibility) => !prevVisibility);
   };
+  const handleLinkRedirect = (e, link) => {
+    e.preventDefault();
+    window.location.href = `${link}`;
+  };
 
   return (
     <>
@@ -28,16 +32,24 @@ const Navbar = () => {
 
         {/* style={{display: isOpen ? 'block' : 'none'}} */}
         <nav className="navbar-content">
-          {/* <Link href="/">Home</Link>
-          <Link href="/clients">Clients</Link>
-          <Link href="/staff">Staff</Link>
-          <Link href="/bread_categories">Bread Categories</Link>
-          <Link href="/ingredients">Ingredients</Link>
-          <Link href="/stock">Stock</Link>
-          <Link href="/minimal_stock">Minimal Stock</Link>
-          <Link href="/breads">Breads</Link>
-          <Link href="/recipe_elements">Recipe Elements</Link>
-          <Link href="/orders">Orders</Link> */}
+          <button
+            className={"button-yellow"}
+            onClick={(e) => handleLinkRedirect(e, "/offer")}
+          >
+            Offers
+          </button>
+          <button
+            className={"button-yellow"}
+            onClick={(e) => handleLinkRedirect(e, "/group")}
+          >
+            Groups
+          </button>
+          <button
+            className={"button-yellow"}
+            onClick={(e) => handleLinkRedirect(e, "/product")}
+          >
+            Products
+          </button>
         </nav>
       </div>
     </>
