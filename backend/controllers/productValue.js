@@ -113,7 +113,7 @@ class ProductValueController {
         throw `p_value_model with code ${reqBody.code} does not exists`;
       }
       var data = await DBquery(
-        `update p_value set pvm_id = '${reqBody.model_id}', pp_id = '${reqBody.product_id}' , pv_value = '${reqBody.value}' ` +
+        `update p_value set pv_value = '${reqBody.value}' where pvm_id = ${reqBody.model_id} and pp_id = ${reqBody.product_id} ` +
           `returning pvm_id as model_id, pp_id as product_id , pv_value as value;`
       );
       var m = new ResponseModel(data, data.length, 0);
