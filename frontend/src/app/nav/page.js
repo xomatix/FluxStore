@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 const NavigationBar = () => {
     const [groups, setGroups] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
-
-    // hello
     useEffect(() => {
         const fetchGroups = async () => {
             try {
@@ -21,7 +19,7 @@ const NavigationBar = () => {
         fetchGroups();
     }, []);
 
-
+    // hello line 22
     const handleGroupRedirect = (e, link) => {
         e.preventDefault();
         window.location.href = `${link}`;
