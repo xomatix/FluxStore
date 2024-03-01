@@ -30,6 +30,7 @@ router.initProductValueModelRoutes();
 router.initProductValueRoutes();
 router.initOfferRoutes();
 router.initFileRoutes();
+router.initOrderRoutes();
 
 createUploadsDirectory();
 

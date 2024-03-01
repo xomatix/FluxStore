@@ -7,6 +7,7 @@ const {
   ProductValueModelController,
 } = require("./controllers/productValueModel");
 const { FileController } = require("./controllers/file");
+const { OrderControlller } = require("./controllers/order");
 
 class ApiRouter {
   app;
@@ -99,6 +100,11 @@ class ApiRouter {
     });
     this.app.post("/file/delete", (request, response) => {
       FileController.delete(request, response);
+    });
+  };
+  initOrderRoutes = () => {
+    this.app.post("/order/list", (request, response) => {
+      OrderControlller.list(request, response);
     });
   };
 }
