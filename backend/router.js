@@ -1,3 +1,4 @@
+const { response } = require("express");
 const { GroupContorller } = require("./controllers/group");
 const { OfferController } = require("./controllers/offer");
 const { ProductController } = require("./controllers/product");
@@ -5,6 +6,7 @@ const { ProductValueController } = require("./controllers/productValue");
 const {
   ProductValueModelController,
 } = require("./controllers/productValueModel");
+const { FileController } = require("./controllers/file");
 
 class ApiRouter {
   app;
@@ -79,6 +81,21 @@ class ApiRouter {
     });
     this.app.post("/offer/delete", (request, response) => {
       OfferController.delete(request, response);
+    });
+  };
+  initFileRoutes = () => {
+    this.app.post(
+      "/file/add",
+      FileController.upload.single("file"),
+      (request, response) => {
+        FileController.add(request, response);
+      }
+    );
+    this.app.post("/file/list", (request, response) => {
+      FileController.list(request, response);
+    });
+    this.app.post("/file/update", (request, response) => {
+      FileController.update(request, response);
     });
   };
 }

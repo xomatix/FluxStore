@@ -38,3 +38,10 @@ CREATE table if not exists  o_offer (
     oo_discount decimal NOT NULL,
     oo_flag INTEGER not NULL
 );
+
+CREATE table if not exists  p_file (
+    pf_id SERIAL PRIMARY KEY,
+    pp_id INTEGER REFERENCES p_product(pp_id),
+    pf_path varchar(2500),
+    pf_flag INTEGER not NULL
+);

@@ -2,6 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { ApiRouter } = require("./router");
 const cors = require("cors");
+const {
+  sendFileToSftp,
+  createUploadsDirectory,
+} = require("./helpers/fileHelper");
 
 const app = express();
 const port = 8080;
@@ -25,6 +29,9 @@ router.initProductRoutes();
 router.initProductValueModelRoutes();
 router.initProductValueRoutes();
 router.initOfferRoutes();
+router.initFileRoutes();
+
+createUploadsDirectory();
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
