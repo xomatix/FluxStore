@@ -134,6 +134,44 @@ class FileController {
       response.status(500).send(error);
     }
   };
+
+  static delete = async (request, response) => {
+    try {
+      var reqBody = request.body;
+      throw "not implemented method";
+      //   request.body.id = Number(request.body.id);
+      //   if (
+      //     request.body.id == undefined ||
+      //     request.body.id == null ||
+      //     request.body.id == 0 ||
+      //     typeof request.body.id != typeof 0
+      //   ) {
+      //     throw `no product_id provided or not correct format (INT)`;
+      //   }
+      //   var existsProduct = await DBquery(
+      //     `SELECT count(*)>0 as exists FROM p_product WHERE pp_id = ${request.body.id};`
+      //   );
+      //   if (existsProduct.length < 1 || existsProduct[0].exists == false) {
+      //     throw `product with id ${request.body.id} does not exists`;
+      //   }
+
+      //   console.log("New path = " + pathOnSftpServer);
+      //   await sendFileToSftp(request.file.path, pathOnSftpServer);
+      //   console.log(request.body.id);
+
+      //   var insertQuery =
+      //     `insert into p_file (pp_id,pf_path,pf_flag) values (${request.body.id}, '/${pathOnSftpServer}', 0) ` +
+      //     ` returning pf_id as id, pp_id as product_id , pf_path as path,pf_flag as flag;`;
+      //   var data = await DBquery(insertQuery);
+
+      //   deleteFile(request.file.path);
+
+      //   response.status(200).send(data);
+    } catch (error) {
+      console.error(error);
+      response.status(500).send(error);
+    }
+  };
 }
 
 module.exports = {
