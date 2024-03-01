@@ -6,6 +6,7 @@ const NavigationBar = () => {
     const [groups, setGroups] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
 
+    // hello
     useEffect(() => {
         const fetchGroups = async () => {
             try {
