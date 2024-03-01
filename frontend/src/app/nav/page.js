@@ -53,7 +53,7 @@ const NavigationBar = () => {
                             ))
                         ) : (
                             <div className="dropdown-item">
-                                Loading... {/* Loading state */}
+                                Loading... {}
                             </div>
                         )}
                     </div>

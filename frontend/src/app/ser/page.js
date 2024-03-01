@@ -24,12 +24,10 @@ const SearchOffers = () => {
     const handleInputChange = (event) => {
         const query = event.target.value;
         setSearchQuery(query);
-        // Only filter offers if the query is not empty
         if (query.trim() !== '') {
             const filtered = offers.filter(offer => offer.name.toLowerCase().includes(query.toLowerCase()));
             setFilteredOffers(filtered);
         } else {
-            // If the query is empty, clear the filtered offers
             setFilteredOffers([]);
         }
     };
