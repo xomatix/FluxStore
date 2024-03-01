@@ -97,6 +97,9 @@ class ApiRouter {
     this.app.post("/file/update", (request, response) => {
       FileController.update(request, response);
     });
+    this.app.post("/file/delete", (request, response) => {
+      FileController.delete(request, response);
+    });
   };
 }
 

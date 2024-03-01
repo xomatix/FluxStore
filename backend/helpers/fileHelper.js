@@ -4,17 +4,17 @@ const fs = require("fs");
 const sftp = new SFTPClient();
 
 const baseSftpServerPath = "/home/eaiibgrp/maswierc/public_html";
+const sftpConfig = {
+  host: "student.agh.edu.pl",
+  port: "22",
+  username: "maswierc",
+  password: "3fiba+fog",
+  algorithms: {},
+};
 
 const sendFileToSftp = (filePath, fileName) => {
-  console.log(sftp.stat);
   sftp
-    .connect({
-      host: "student.agh.edu.pl",
-      port: "22",
-      username: "maswierc",
-      password: "3fiba+fog",
-      algorithms: {},
-    })
+    .connect(sftpConfig)
     .then(async () => {
       var remoteDir =
         baseSftpServerPath + `/object_files/${fileName.split("/")[0]}`;
@@ -24,6 +24,23 @@ const sendFileToSftp = (filePath, fileName) => {
         "C:\\Users\\asus\\Desktop\\code\\software_studio\\backend\\" + filePath,
         baseSftpServerPath + `/object_files/${fileName}`
       );
+    })
+    .then(async (data) => {
+      await sftp.end();
+      console.log(data, "the data info");
+    })
+    .catch((err) => {
+      console.log(err, "catch error");
+    });
+};
+
+const deleteFileFromSftp = (filePath) => {
+  sftp
+    .connect(sftpConfig)
+    .then(async () => {
+      var remotePath = baseSftpServerPath + `/object_files${filePath}`;
+
+      return await sftp.delete(remotePath, true);
     })
     .then(async (data) => {
       await sftp.end();
@@ -61,4 +78,5 @@ module.exports = {
   sendFileToSftp,
   createUploadsDirectory,
   deleteFile,
+  deleteFileFromSftp,
 };

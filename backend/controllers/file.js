@@ -1,6 +1,10 @@
 const multer = require("multer");
 const path = require("path");
-const { sendFileToSftp, deleteFile } = require("../helpers/fileHelper");
+const {
+  sendFileToSftp,
+  deleteFile,
+  deleteFileFromSftp,
+} = require("../helpers/fileHelper");
 const { DBquery } = require("../database");
 const { ResponseModel } = require("../models/responseModel");
 
@@ -138,35 +142,24 @@ class FileController {
   static delete = async (request, response) => {
     try {
       var reqBody = request.body;
-      throw "not implemented method";
-      //   request.body.id = Number(request.body.id);
-      //   if (
-      //     request.body.id == undefined ||
-      //     request.body.id == null ||
-      //     request.body.id == 0 ||
-      //     typeof request.body.id != typeof 0
-      //   ) {
-      //     throw `no product_id provided or not correct format (INT)`;
-      //   }
-      //   var existsProduct = await DBquery(
-      //     `SELECT count(*)>0 as exists FROM p_product WHERE pp_id = ${request.body.id};`
-      //   );
-      //   if (existsProduct.length < 1 || existsProduct[0].exists == false) {
-      //     throw `product with id ${request.body.id} does not exists`;
-      //   }
+      console.log(reqBody);
+      if (reqBody.id == null || reqBody.id == undefined || reqBody.id == 0) {
+        throw "no id provided";
+      }
+      var exists = await DBquery(
+        `SELECT pf_id<>0 as exists , pf_path as path FROM p_file WHERE pf_id = ${reqBody.id};`
+      );
+      if (exists.length < 1 || !exists[0].exists) {
+        throw `file with id ${reqBody.id} does not exists`;
+      }
 
-      //   console.log("New path = " + pathOnSftpServer);
-      //   await sendFileToSftp(request.file.path, pathOnSftpServer);
-      //   console.log(request.body.id);
+      //console.log(exists[0].path);
+      deleteFileFromSftp(exists[0].path);
 
-      //   var insertQuery =
-      //     `insert into p_file (pp_id,pf_path,pf_flag) values (${request.body.id}, '/${pathOnSftpServer}', 0) ` +
-      //     ` returning pf_id as id, pp_id as product_id , pf_path as path,pf_flag as flag;`;
-      //   var data = await DBquery(insertQuery);
-
-      //   deleteFile(request.file.path);
-
-      //   response.status(200).send(data);
+      var data = await DBquery(
+        `delete from p_file where pf_id = ${reqBody.id} ;`
+      );
+      response.status(200).send(`file with id ${reqBody.id} deleted`);
     } catch (error) {
       console.error(error);
       response.status(500).send(error);

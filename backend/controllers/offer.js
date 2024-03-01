@@ -257,7 +257,7 @@ class OfferController {
       var data = await DBquery(
         `delete from o_offer where oo_id = ${reqBody.id} `
       );
-      response.status(200).send(`product with id = ${reqBody.id} deleted`);
+      response.status(200).send(`offer with id = ${reqBody.id} deleted`);
     } catch (error) {
       console.error(error);
       response.status(500).send(error);
