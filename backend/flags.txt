@@ -1,0 +1,6 @@
+
+
+pf_flag - file/photo flag
+1 - bit (1) photo is main when set
+2 - bit (2)
+3 - bit (3)

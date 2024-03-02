@@ -27,13 +27,35 @@ class ProductController {
       var data = await DBquery(
         `select pp.pp_id as id, pp.pp_name as name, pp.pp_code as code, pp.pp_price as price, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
           `json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
+          `,json_agg( JSON_BUILD_OBJECT('id',pf.pf_id,'path',pf.pf_path,'flag',pf.pf_flag, 'is_main', pf.pf_flag&1<>0)) as photos ` +
           `from p_product pp ` +
           `left join p_value pv on (pp.pp_id=pv.pp_id) ` +
           `left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
+          `left join p_file pf on (pf.pp_id=pp.pp_id) ` +
           ` ${idsWhereQuery} ` +
           `group by pp.pp_id ` +
           `${rowsPageQuery};`
       );
+
+      data.forEach((element) => {
+        var correctPhotos = [];
+        var usedPhotos = [];
+
+        if (
+          element.photos != null &&
+          element.photos != undefined &&
+          element.photos.length > 0
+        ) {
+          element.photos.forEach((photo) => {
+            if (photo.id != null && usedPhotos.indexOf(photo.id) == -1) {
+              usedPhotos.push(photo.id);
+              correctPhotos.push(photo);
+            }
+          });
+          element.photos = correctPhotos;
+        }
+      });
+
       var m = new ResponseModel(data, data.length, reqBody.page);
       response.status(200).send(m);
     } catch (error) {
