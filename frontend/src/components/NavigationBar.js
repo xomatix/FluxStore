@@ -19,7 +19,6 @@ const NavigationBar = () => {
         fetchGroups();
     }, []);
 
-    // hello line 22
     const handleGroupRedirect = (e, link) => {
         e.preventDefault();
         window.location.href = `${link}`;
