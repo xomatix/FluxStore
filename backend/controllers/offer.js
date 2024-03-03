@@ -28,6 +28,14 @@ class OfferController {
         postWhereQuery = "";
         idsWhereQuery = ` where oo.oo_id in (${reqBody.ids.join(",")})`;
       }
+      var orderRandomQuery = "";
+      if (
+        typeof reqBody.random == typeof true &&
+        reqBody.random != null &&
+        reqBody.random != undefined
+      ) {
+        orderRandomQuery = "order by random()";
+      }
 
       var data = await DBquery(
         ` ${preWhereQuery} ` +
@@ -49,7 +57,8 @@ class OfferController {
               : ""
           } ` +
           `group by oo.oo_discount, oo.oo_id ` +
-          `${rowsPageQuery};`
+          `${orderRandomQuery} ` +
+          `${rowsPageQuery}; `
       );
 
       data.forEach((element) => {
