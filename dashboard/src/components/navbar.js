@@ -3,7 +3,7 @@ import "./navbar.css";
 import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     // document.addEventListener("keypress", (e) => {
@@ -33,19 +33,19 @@ const Navbar = () => {
         {/* style={{display: isOpen ? 'block' : 'none'}} */}
         <nav className="navbar-content">
           <button
-            className={"button-yellow"}
+            className={"button-blue"}
             onClick={(e) => handleLinkRedirect(e, "/offer")}
           >
             Offers
           </button>
           <button
-            className={"button-yellow"}
+            className={"button-blue"}
             onClick={(e) => handleLinkRedirect(e, "/group")}
           >
             Groups
           </button>
           <button
-            className={"button-yellow"}
+            className={"button-blue"}
             onClick={(e) => handleLinkRedirect(e, "/product")}
           >
             Products

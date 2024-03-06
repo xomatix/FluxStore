@@ -38,11 +38,17 @@ const AddProduct = () => {
       product.price = parseFloat(product.price);
     }
 
+    if (typeof product.flag === "string") {
+      product.flag = parseInt(product.flag);
+    }
+
     try {
       console.log(JSON.stringify(product));
-      const response = await ProductController.add(product); // Directly pass the product object
+      let response = await ProductController.add(product); // Directly pass the product object
       // Handle the result here, e.g., show a success message or update the product list
+      response = response.data[0];
       console.log("Product added successfully:", response);
+      window.location.href = "/product/update/" + response.id;
     } catch (error) {
       console.error("Error adding product:", error);
       // Handle errors, e.g., show an error message to the user

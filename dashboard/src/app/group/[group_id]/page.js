@@ -58,7 +58,7 @@ const GroupAddUpdateForm = () => {
       console.log(vmInputModel);
       var vmData = await ProductValueModelController.list(vmInputModel);
       vmData = vmData.data;
-      //   console.log("Data that i got: " + vmData.id + JSON.stringify(vmData));
+      console.log("Data that i got: " + vmData.id + JSON.stringify(vmData));
       if (vmData == null || vmData == undefined) return;
       setValueModelData(vmData);
     }
@@ -72,7 +72,20 @@ const GroupAddUpdateForm = () => {
   const handleChangeValueModel = (e, i) => {
     e.preventDefault();
     var oldData = valueModelData;
-    oldData[i][e.target.name] = e.target.value;
+    console.log(e.target.name);
+    console.log(e.target);
+    if (
+      e.target.name == "is_number" ||
+      e.target.name == "is_dictionary" ||
+      e.target.name == "is_text"
+    ) {
+      oldData[i].is_number = false;
+      oldData[i].is_dictionary = false;
+      oldData[i].is_text = false;
+      oldData[i][e.target.name] = true;
+    } else {
+      oldData[i][e.target.name] = e.target.value;
+    }
     setValueModelData([...oldData]);
   };
 
@@ -123,6 +136,9 @@ const GroupAddUpdateForm = () => {
           code: element.code,
           desc: element.desc,
           flag: element.flag,
+          is_dictionary: element.is_dictionary,
+          is_text: element.is_text,
+          is_number: element.is_number,
         };
         console.log(vmInputModel);
         await ProductValueModelController.update(vmInputModel);
@@ -200,6 +216,40 @@ const GroupAddUpdateForm = () => {
                       onChange={(e) => handleChangeValueModel(e, i)}
                     />
                   </label>
+                  <button
+                    name="is_number"
+                    className={
+                      valueModelData[i].is_number
+                        ? "button-blue"
+                        : "button-yellow"
+                    }
+                    onClick={(e) => handleChangeValueModel(e, i)}
+                  >
+                    Number
+                  </button>
+                  <button
+                    name="is_dictionary"
+                    className={
+                      valueModelData[i].is_dictionary
+                        ? "button-blue"
+                        : "button-yellow"
+                    }
+                    onClick={(e) => handleChangeValueModel(e, i)}
+                  >
+                    Dictionary
+                  </button>
+                  <button
+                    name="is_text"
+                    className={
+                      valueModelData[i].is_text
+                        ? "button-blue"
+                        : "button-yellow"
+                    }
+                    onClick={(e) => handleChangeValueModel(e, i)}
+                  >
+                    Text
+                  </button>
+                  <br />
                   <button
                     className="button-red"
                     onClick={(e) => handleDelete(e, i)}

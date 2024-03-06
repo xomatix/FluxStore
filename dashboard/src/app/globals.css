@@ -12,12 +12,15 @@ form , .form{
   background: white;
   padding: 20px;
   min-width: 35vw;
+  max-width: 95vh;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
 
 input[type="text"],input[type="number"], textarea, input[type="submit"] {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;

@@ -22,19 +22,27 @@ const GroupList = () => {
   const handleGroupRedirect = (e, id) => {
     e.preventDefault();
     if (id == 0) return;
-    window.location.href = `/product/update/${id}`;
+    window.location.href = `/product/${id}`;
   };
 
   return (
     <>
-      <h3>Product List</h3>
+      <h3>
+        Product List <br />
+        <div
+          className={"button-blue"}
+          onClick={(e) => handleGroupRedirect(e, "add")}
+        >
+          Add +
+        </div>
+      </h3>
       <div className="centered-list">
         <div class="divTable">
           {groupList.map((x, i) => {
             return (
               <div
                 className={"row"}
-                onClick={(e) => handleGroupRedirect(e, x.id)}
+                onClick={(e) => handleGroupRedirect(e, "update/" + x.id)}
               >
                 <div className={"cell"}>{x.id}</div>
                 <div className={"cell"}>{x.name}</div>

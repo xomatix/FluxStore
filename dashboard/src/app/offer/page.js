@@ -28,7 +28,15 @@ const GroupList = () => {
 
   return (
     <>
-      <h3>Offer List</h3>
+      <h3>
+        Offer List <br />
+        <div
+          className={"button-blue"}
+          onClick={(e) => handleGroupRedirect(e, "add")}
+        >
+          Add +
+        </div>
+      </h3>
       <div className="centered-list">
         <div class="divTable">
           {groupList.map((x, i) => {
