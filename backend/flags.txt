@@ -1,6 +1,13 @@
 
 
 pf_flag - file/photo flag
-1 - bit (1) photo is main when set
-2 - bit (2)
-3 - bit (3)
+0 - bit (1) photo is main when set
+1 - bit (2)
+2 - bit (3)
+
+
+pvm_flag - product value model flag
+0 - bit (1) value is number
+1 - bit (2) value is dictionary
+2 - bit (4)
+3 - bit (8)

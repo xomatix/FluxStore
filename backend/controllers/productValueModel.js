@@ -1,4 +1,5 @@
 const { DBquery } = require("../database");
+const { setNthBit } = require("../helpers/bitOperators");
 const { ResponseModel } = require("../models/responseModel");
 
 class ProductValueModelController {
@@ -25,7 +26,8 @@ class ProductValueModelController {
           whereQuery = `where pvm.pg_id = ${reqBody.data.group_id} `;
         }
       var data = await DBquery(
-        `select pvm.pvm_id as id, pvm.pvm_name as name, pvm.pvm_code as code , pvm.pg_id as group_id, pvm.pvm_desc as desc, pvm.pvm_flag as flag ` +
+        `select pvm.pvm_id as id, pvm.pvm_name as name, pvm.pvm_code as code , pvm.pg_id as group_id, pvm.pvm_desc as desc, pvm.pvm_flag as flag, pvm.pvm_flag&(1) <> 0 as is_number, pvm.pvm_flag&(2) <> 0 as is_dictionary, pvm.pvm_flag&(3) = 0 as is_text
+          ` +
           `from p_value_model pvm ` +
           `${whereQuery}` +
           `${rowsPageQuery};`
@@ -123,6 +125,31 @@ class ProductValueModelController {
       ) {
         throw `can't change group_id correct request format`;
       }
+      if (
+        reqBody.is_number == true &&
+        reqBody.is_dictionary == false &&
+        reqBody.is_text == false
+      ) {
+        reqBody.flag = setNthBit(reqBody.flag, 1, 1);
+        reqBody.flag = setNthBit(reqBody.flag, 2, 0);
+      }
+      if (
+        reqBody.is_number == false &&
+        reqBody.is_dictionary == true &&
+        reqBody.is_text == false
+      ) {
+        reqBody.flag = setNthBit(reqBody.flag, 2, 1);
+        reqBody.flag = setNthBit(reqBody.flag, 1, 0);
+      }
+      if (
+        reqBody.is_number == false &&
+        reqBody.is_dictionary == false &&
+        reqBody.is_text == true
+      ) {
+        reqBody.flag = setNthBit(reqBody.flag, 1, 0);
+        reqBody.flag = setNthBit(reqBody.flag, 2, 0);
+      }
+      console.log(reqBody);
       var data = await DBquery(
         `update p_value_model set pvm_name = '${reqBody.name}' , pvm_code = upper('${reqBody.code}') , pvm_desc = '${reqBody.desc}',pvm_flag = ${reqBody.flag} where pvm_id = ${reqBody.id} ` +
           `returning pvm_id as id, pvm_name as name, pvm_code as code , pg_id as group_id, pvm_desc as desc, pvm_flag as flag;`
