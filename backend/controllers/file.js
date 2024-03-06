@@ -92,9 +92,10 @@ class FileController {
         ` returning pf_id as id, pp_id as product_id , pf_path as path,pf_flag as flag;`;
       var data = await DBquery(insertQuery);
 
-      deleteFile(request.file.path);
-
       response.status(200).send(data);
+      setTimeout(() => {
+        deleteFile(request.file.path);
+      }, 500);
     } catch (error) {
       console.error(error);
       response.status(500).send(error);

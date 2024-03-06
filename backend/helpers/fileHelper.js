@@ -31,6 +31,9 @@ const sendFileToSftp = (filePath, fileName) => {
     })
     .catch((err) => {
       console.log(err, "catch error");
+    })
+    .finally(async () => {
+      await sftp.end();
     });
 };
 
@@ -48,6 +51,9 @@ const deleteFileFromSftp = (filePath) => {
     })
     .catch((err) => {
       console.log(err, "catch error");
+    })
+    .finally(async () => {
+      await sftp.end();
     });
 };
 
