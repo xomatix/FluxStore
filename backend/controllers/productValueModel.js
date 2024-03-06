@@ -26,12 +26,24 @@ class ProductValueModelController {
           whereQuery = `where pvm.pg_id = ${reqBody.data.group_id} `;
         }
       var data = await DBquery(
-        `select pvm.pvm_id as id, pvm.pvm_name as name, pvm.pvm_code as code , pvm.pg_id as group_id, pvm.pvm_desc as desc, pvm.pvm_flag as flag, pvm.pvm_flag&(1) <> 0 as is_number, pvm.pvm_flag&(2) <> 0 as is_dictionary, pvm.pvm_flag&(3) = 0 as is_text
-          ` +
+        `select pvm.pvm_id as id, pvm.pvm_name as name, pvm.pvm_code as code , pvm.pg_id as group_id, pvm.pvm_desc as desc, pvm.pvm_flag as flag,` +
+          ` pvm.pvm_flag&(1) <> 0 as is_number, pvm.pvm_flag&(2) <> 0 as is_dictionary, pvm.pvm_flag&(3) = 0 as is_text, ` +
+          `CASE WHEN pvm.pvm_flag & 2 <> 0 THEN json_agg(DISTINCT pv.pv_value) ELSE '[]'::json END AS values ` +
           `from p_value_model pvm ` +
+          `left join p_value pv on (pv.pvm_id=pvm.pvm_id) ` +
           `${whereQuery}` +
-          `${rowsPageQuery};`
+          `${rowsPageQuery} ` +
+          `group by pvm.pvm_id ;`
       );
+      data.forEach((element) => {
+        let dict = [];
+        element.values.forEach((x) => {
+          if (x != null) {
+            dict.push(x);
+          }
+        });
+        element.values = dict;
+      });
       var m = new ResponseModel(data, data.length, 0);
       response.status(200).send(m);
     } catch (error) {
