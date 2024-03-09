@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 const GroupAddUpdateForm = () => {
   const [formData, setFormData] = useState({
+    group: true,
     id: 0,
     name: "",
     code: "",
@@ -154,9 +155,9 @@ const GroupAddUpdateForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={"container"}>
       <label>
-        Group name:
+        <p>group name:</p>
         <input
           type="text"
           name="name"
@@ -165,7 +166,7 @@ const GroupAddUpdateForm = () => {
         />
       </label>
       <label>
-        Code:
+        <p>code:</p>
         <input
           readOnly={
             typeof Number(valueModelDataForm.group_id) == typeof 0 &&
@@ -181,15 +182,17 @@ const GroupAddUpdateForm = () => {
 
       {valueModelData.length > 0 && (
         <>
-          <h3>
-            <b>Product Value Model</b>
-          </h3>
+          <label>
+            <p>
+              <b>product custom values models</b>
+            </p>
+          </label>
           <div className="cards-container">
             {valueModelData.map((x, i) => {
               return (
                 <div className="card">
                   <label>
-                    name:
+                    <p>name:</p>
                     <input
                       type="text"
                       name="name"
@@ -198,7 +201,7 @@ const GroupAddUpdateForm = () => {
                     />
                   </label>
                   <label>
-                    code:
+                    <p>code:</p>
                     <input
                       readOnly={true}
                       type="text"
@@ -208,7 +211,7 @@ const GroupAddUpdateForm = () => {
                     />
                   </label>
                   <label>
-                    desc:
+                    <p>desc:</p>
                     <textarea
                       type="text"
                       name="desc"
@@ -216,42 +219,45 @@ const GroupAddUpdateForm = () => {
                       onChange={(e) => handleChangeValueModel(e, i)}
                     />
                   </label>
-                  <button
-                    name="is_number"
-                    className={
-                      valueModelData[i].is_number
-                        ? "button-blue"
-                        : "button-yellow"
-                    }
-                    onClick={(e) => handleChangeValueModel(e, i)}
-                  >
-                    Number
-                  </button>
-                  <button
-                    name="is_dictionary"
-                    className={
-                      valueModelData[i].is_dictionary
-                        ? "button-blue"
-                        : "button-yellow"
-                    }
-                    onClick={(e) => handleChangeValueModel(e, i)}
-                  >
-                    Dictionary
-                  </button>
-                  <button
-                    name="is_text"
-                    className={
-                      valueModelData[i].is_text
-                        ? "button-blue"
-                        : "button-yellow"
-                    }
-                    onClick={(e) => handleChangeValueModel(e, i)}
-                  >
-                    Text
-                  </button>
+                  <label>
+                    <p>data type:</p>
+                    <button
+                      name="is_number"
+                      className={
+                        valueModelData[i].is_number
+                          ? "btn-primary"
+                          : "btn-secondary"
+                      }
+                      onClick={(e) => handleChangeValueModel(e, i)}
+                    >
+                      number
+                    </button>
+                    <button
+                      name="is_dictionary"
+                      className={
+                        valueModelData[i].is_dictionary
+                          ? "btn-primary"
+                          : "btn-secondary"
+                      }
+                      onClick={(e) => handleChangeValueModel(e, i)}
+                    >
+                      dictionary
+                    </button>
+                    <button
+                      name="is_text"
+                      className={
+                        valueModelData[i].is_text
+                          ? "btn-primary"
+                          : "btn-secondary"
+                      }
+                      onClick={(e) => handleChangeValueModel(e, i)}
+                    >
+                      text
+                    </button>
+                  </label>
                   <br />
                   <button
-                    className="button-red"
+                    className="btn-primary"
                     onClick={(e) => handleDelete(e, i)}
                   >
                     Delete 🗑️
@@ -268,10 +274,10 @@ const GroupAddUpdateForm = () => {
         !isNaN(Number(valueModelDataForm.group_id)) && (
           <>
             <h3>
-              <b>Add Product Value Model</b>
+              <b>Add product custom value Model</b>
             </h3>
             <label>
-              name:
+              <p>name:</p>
               <input
                 type="text"
                 name="name"
@@ -280,7 +286,7 @@ const GroupAddUpdateForm = () => {
               />
             </label>
             <label>
-              code:
+              <p>code:</p>
               <input
                 type="text"
                 name="code"
@@ -289,7 +295,7 @@ const GroupAddUpdateForm = () => {
               />
             </label>
             <label>
-              desc:
+              <p>desc:</p>
               <textarea
                 type="text"
                 name="desc"
@@ -300,7 +306,11 @@ const GroupAddUpdateForm = () => {
           </>
         )}
 
-      <input type="submit" value="Save" />
+      <div className={"center"}>
+        <button className={"btn-primary"} type="submit">
+          Save 💾
+        </button>
+      </div>
     </form>
   );
 };

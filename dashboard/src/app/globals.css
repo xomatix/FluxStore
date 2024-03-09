@@ -1,113 +1,138 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: fit-content;
-  margin: 0;
-  background-color: #f0f0f0;
+/* Define a dark theme using custom properties */
+:root {
+  --bg-color: #1f1e1e;
+  --bg-second-color: #080808;
+  --text-color: #fff;
+  --text-second-color: #fff;
+  --text-dark-color: #2c2c2c;
+  --input-color: #333;
+  --input-border-color: #444;
+  --border-color: #8d8c8c;
+  --input-focus-color: #555;
+  --bg-focus: #b3b3b3;
+  --border-radius: 6px;
+  --input-margin: auto 5px auto auto;
+}
+
+/* Apply the dark theme to the body element */
+body, html {
+  background-color: var(--bg-second-color);
+  color: var(--text-color);
   font-family: Arial, sans-serif;
 }
 
-form , .form{
-  background: white;
-  padding: 20px;
-  min-width: 35vw;
-  max-width: 95vh;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+/* Create a container element with a fixed width and center it horizontally */
+.container {
+  width: 1080px;
+  margin: 5px auto;
+  background-color: var(--bg-second-color);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 5px ;
 }
 
-input[type="text"],input[type="number"], textarea, input[type="submit"] {
-  width: 95%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+/* Use media queries to make the container responsive */
+@media (max-width: 1080px) {
+  .container {
+    width: 90%;
+  }
 }
 
+@media (min-width: 1920px) {
+  .container {
+    width: 50%;
+  }
+}
+
+/* Style the label element with some margin and padding */
 label {
-  width: 100%;
-}
-
-input[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-}
-
-input[type="submit"]:hover {
-  background-color: #45a049;
-}
-
-.button-red {
-  background-color: #d32525;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px; 
-}
-
-.button-blue {
-  background-color: #1d6eb9;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px; 
-}
-
-.button-green {
-  background-color: #45a049;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px; 
-}
-
-.button-yellow {
-  background-color: #ffff99; /* This is a light yellow color */
-  color: black;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px; 
-}
-
-.cards-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  width: auto;
+  margin: 10px 0;
+  padding: 5px;
+  color: var(--text-second-color);
+}
+label > p {
+  margin: auto auto auto 0;
 }
 
-.card {
-  flex: 0 0 calc(50% - 40px);
-  margin-bottom: 20px;
-  padding: 20px;
-  /* Add other styles for your card */
+/* Style the input element with some width, height, border, and padding */
+form>input {
+  display: block;
+  width: 80%;
+  height: 30px;
+  
+}
+
+input {
+  border: 1px solid var(--input-border-color);
+  background-color: var(--input-color);
+  color: var(--text-color);
+  padding: 5px;
+  margin: var(--input-margin);
+  border-radius: var(--border-radius);
+  width: 80%;
+}
+
+/* Change the input border color on focus */
+input:focus {
+  border-color: var(--input-border-color);
+}
+
+textarea {
+  display: block;
+  width: 80%;
+  max-width: 80%;
+  min-width: 80%;
+  width: 80%;
+  height: 100px;
+  margin: var(--input-margin);
+  border: 1px solid var(--input-border-color);
+  background-color: var(--input-color);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  padding: 5px;
+}
+
+hr {
+  border: 1px solid var(--input-border-color);
+}
+
+.btn-primary {
+  display: inline-block;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 0 10px 0 0;
+  border: 1px solid var(--input-border-color);
+  background-color: var(--text-color);
+  color: var(--text-dark-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+/* Change the btn-primary background color on hover */
+/* .btn-primary:hover {
+  background-color: var(--input-border-color);
+  color: var(--text-color);
+} */
+
+/* Create a btn-secondary class for a secondary button */
+.btn-secondary {
+  display: inline-block;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 0 10px 0 0;
+  border: 1px solid var(--input-border-color);
+  border: none;
+  background-color: var(--input-border-color); /* A gray color */
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.center {
+  width: 100%;
+  text-align: center;
 }
 
 .overlay-parent {
@@ -116,53 +141,59 @@ input[type="submit"]:hover {
   left: 0;
   height: 100vh; /* This makes the parent div take up the full viewport height */
   width: 100vw; /* This makes the parent div take up the full viewport width */
-  background-color: #42424285;
+  background-color: var(--bg-second-color);
  }
- 
- .centered-list {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* Additional styling for your list */
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
- }
-
- .divTable {
-  display: table;
+ table{
+  /* border-collapse: collapse; */
   width: 100%;
-  border-collapse: collapse;
-  border-spacing: 0 5px;
-  border: 1px solid transparent;
- }
- 
- .divTable .row {
-  display: table-row;
- }
- 
- .divTable .cell {
-  display: table-cell;
-  padding: 10px 20px;
-  border: 1px solid #ccc;
- }
- 
- .divTable .row:hover {
-  background-color: rgba(162, 216, 242, 0.14);
- }
- 
- .divTable .cell:hover {
-  background-color: rgba(162, 216, 242, 0.14);
-  border: 1px solid rgba(124, 204, 243, 0.58);
  }
 
- .link-input {
-  color: #1d41b9;
- }
- 
- .link-input:hover {
-  text-decoration: underline;
-  cursor: pointer;
- }
+ tr {
+  padding: 0;
+  margin: 1px 0;
+  border: 1px solid var(--input-border-color);
+  border-radius: var(--border-radius);
+  /* min-height: min-content; */
+  background-color: var(--bg-second-color);
+  height: fit-content;
+  display: grid; 
+  grid-template-columns: 7% 55% 32% 6%;
+}
+tr:nth-child(even) {
+  background-color: var(--bg-color);
+}
+
+tr:hover {
+  color: var(--text-dark-color);
+  background-color: var(--text-color);
+  border-color: 1px solid var(--input-border-color);
+}
+
+td,th {
+  min-width: fit-content;
+  padding-left: 2px;
+  line-height: 35px;
+  text-align: left;
+  border: 1px solid var(--input-focus-color);
+  overflow: hidden;
+}
+
+.hidden-item {
+  display: none;
+}
+
+.search-box {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  width: 10vw;
+  height: 2vw;
+  font-size: large;
+}
+
+.search-box>input {
+  position: relative;
+  top: 0;
+  left: 0;
+}

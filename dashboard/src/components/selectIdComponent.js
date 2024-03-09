@@ -1,6 +1,7 @@
 import { GroupController } from "@/controllers/groupController";
 import { ProductController } from "@/controllers/productcontroller";
 import React, { useState, useEffect } from "react";
+import SearchBox from "./searchBox";
 
 const SelectIdComponent = ({ onClickFunction, children, dataType }) => {
   const [showContent, setShowContent] = useState(false);
@@ -38,13 +39,13 @@ const SelectIdComponent = ({ onClickFunction, children, dataType }) => {
 
   return (
     <>
-      <button className="button-blue" onClick={handleClick}>
+      <button className="btn-primary" onClick={handleClick}>
         {children}
       </button>
       {showContent && (
         <div className="overlay-parent">
           <button
-            className={"button-blue"}
+            className={"btn-primary"}
             onClick={(e) => {
               e.preventDefault();
               setShowContent(false);
@@ -52,19 +53,25 @@ const SelectIdComponent = ({ onClickFunction, children, dataType }) => {
           >
             Close
           </button>
-          <div className="centered-list">
-            <div class="divTable">
-              {listData.map((x, i) => {
-                return (
-                  <div className={"row"} onClick={(e) => handleSelect(e, x.id)}>
-                    <div className={"cell"}>{x.id}</div>
-                    <div className={"cell"}>{x.name}</div>
-                    <div className={"cell"}>{x.code}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <SearchBox />
+          <table className="container">
+            {listData.map((x, i) => {
+              return (
+                <tr
+                  key={i}
+                  onClick={(e) => handleSelect(e, x.id)}
+                  className={"search-item"}
+                >
+                  <td>{x.id}</td>
+                  <td>{x.name}</td>
+                  <td>{x.code}</td>
+                  <td>
+                    <button className={"btn-secondary "}>🗝️</button>
+                  </td>
+                </tr>
+              );
+            })}
+          </table>
         </div>
       )}
     </>

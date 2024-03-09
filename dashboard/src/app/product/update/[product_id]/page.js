@@ -148,9 +148,9 @@ const ProductUpdate = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={"container"}>
       <label>
-        Name:
+        <p>Name:</p>
         <input
           type="text"
           name="name"
@@ -159,7 +159,7 @@ const ProductUpdate = () => {
         />
       </label>
       <label>
-        Code:
+        <p>Code:</p>
         <input
           readOnly={true}
           type="text"
@@ -169,7 +169,7 @@ const ProductUpdate = () => {
         />
       </label>
       <label>
-        Price:
+        <p>Price:</p>
         <input
           type="text"
           name="price"
@@ -178,11 +178,11 @@ const ProductUpdate = () => {
         />
       </label>
       <label>
-        Description:
+        <p>Description:</p>
         <textarea name="desc" value={product.desc} onChange={handleChange} />
       </label>
       <label>
-        Quantity:
+        <p>Quantity:</p>
         <input
           type="number"
           name="quantity"
@@ -191,7 +191,7 @@ const ProductUpdate = () => {
         />
       </label>
       <label>
-        Flag:
+        <p>Flag:</p>
         <input
           type="number"
           name="flag"
@@ -200,7 +200,7 @@ const ProductUpdate = () => {
         />
       </label>
       <label>
-        Group:
+        <p>Group:</p>
         <input
           className={"link-input"}
           readOnly={true}
@@ -218,7 +218,7 @@ const ProductUpdate = () => {
         {valueModelData.map((x, i) => (
           <div key={i} className="card">
             <label>
-              {x.name}:
+              <p>{x.name}:</p>
               <input
                 type="text"
                 name="value"
@@ -229,10 +229,11 @@ const ProductUpdate = () => {
           </div>
         ))}
       </div>
-
-      <button className="button-green" type="submit">
-        Update Product
-      </button>
+      <div className={"center"}>
+        <button className="btn-primary" type="submit">
+          Update Product
+        </button>
+      </div>
     </form>
   );
 };

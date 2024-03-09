@@ -1,0 +1,168 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: fit-content;
+  margin: 0;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+form , .form{
+  background: white;
+  padding: 20px;
+  min-width: 35vw;
+  max-width: 95vh;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+input[type="text"],input[type="number"], textarea, input[type="submit"] {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+label {
+  width: 100%;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.button-red {
+  background-color: #d32525;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px; 
+}
+
+.button-blue {
+  background-color: #1d6eb9;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px; 
+}
+
+.button-green {
+  background-color: #45a049;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px; 
+}
+
+.button-yellow {
+  background-color: #ffff99; /* This is a light yellow color */
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px; 
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  flex: 0 0 calc(50% - 40px);
+  margin-bottom: 20px;
+  padding: 20px;
+  /* Add other styles for your card */
+}
+
+.overlay-parent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh; /* This makes the parent div take up the full viewport height */
+  width: 100vw; /* This makes the parent div take up the full viewport width */
+  background-color: #42424285;
+ }
+ 
+ .centered-list {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Additional styling for your list */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ }
+
+ .divTable {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0 5px;
+  border: 1px solid transparent;
+ }
+ 
+ .divTable .row {
+  display: table-row;
+ }
+ 
+ .divTable .cell {
+  display: table-cell;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+ }
+ 
+ .divTable .row:hover {
+  background-color: rgba(162, 216, 242, 0.14);
+ }
+ 
+ .divTable .cell:hover {
+  background-color: rgba(162, 216, 242, 0.14);
+  border: 1px solid rgba(124, 204, 243, 0.58);
+ }
+
+ .link-input {
+  color: #1d41b9;
+ }
+ 
+ .link-input:hover {
+  text-decoration: underline;
+  cursor: pointer;
+ }

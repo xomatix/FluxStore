@@ -79,9 +79,9 @@ const AddProduct = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="container">
       <label>
-        Name:
+        <p>Name:</p>
         <input
           type="text"
           name="name"
@@ -90,7 +90,7 @@ const AddProduct = () => {
         />
       </label>
       <label>
-        Code:
+        <p>Code:</p>
         <input
           type="text"
           name="code"
@@ -99,7 +99,7 @@ const AddProduct = () => {
         />
       </label>
       <label>
-        Price:
+        <p>Price:</p>
         <input
           type="text"
           name="price"
@@ -108,11 +108,11 @@ const AddProduct = () => {
         />
       </label>
       <label>
-        Description:
+        <p>Description:</p>
         <textarea name="desc" value={product.desc} onChange={handleChange} />
       </label>
       <label>
-        Group:
+        <p>Group:</p>
         <br />
         <SelectGroup onClickFunction={handleGroupSelect}></SelectGroup>
         <input
@@ -125,7 +125,7 @@ const AddProduct = () => {
         />
       </label>
       <label>
-        Quantity:
+        <p>Quantity:</p>
         <input
           type="number"
           name="quantity"
@@ -134,7 +134,7 @@ const AddProduct = () => {
         />
       </label>
       <label>
-        Flag:
+        <p>Flag:</p>
         <input
           type="number"
           name="flag"
@@ -142,9 +142,11 @@ const AddProduct = () => {
           onChange={handleChange}
         />
       </label>
-      <button className={"button-green"} type="submit">
-        Add Product
-      </button>
+      <div className={"center"}>
+        <button className={"btn-primary"} type="submit">
+          Add Product
+        </button>
+      </div>
     </form>
   );
 };

@@ -112,19 +112,19 @@ const OfferAddUpdateForm = () => {
   };
 
   return (
-    <div className="form">
+    <div className="container">
       <label>
-        Product:
+        <p>product:</p>
         <br />
         <SelectProduct onClickFunction={handleProductSelect} />
         <br />
       </label>
       <label>
-        name:
+        <p>name:</p>
         <input readOnly={true} type="text" name="name" value={product.name} />
       </label>
       <label>
-        code:
+        <p>code:</p>
         <input
           className={"link-input"}
           onClick={(e) => handleProductRedirect(e)}
@@ -135,11 +135,11 @@ const OfferAddUpdateForm = () => {
         />
       </label>
       <label>
-        base price:
+        <p>base price:</p>
         <input readOnly={true} type="text" name="price" value={product.price} />
       </label>
       <label>
-        quantity:
+        <p>quantity:</p>
         <input
           readOnly={true}
           type="text"
@@ -148,7 +148,7 @@ const OfferAddUpdateForm = () => {
         />
       </label>
       <label>
-        Discount:
+        <p>discount:</p>
         <input
           type="number"
           name="discount"
@@ -157,7 +157,7 @@ const OfferAddUpdateForm = () => {
         />
       </label>
       <label>
-        Price after discount:
+        <p>Price after discount:</p>
         <input
           readOnly={true}
           type="number"
@@ -170,9 +170,11 @@ const OfferAddUpdateForm = () => {
           onChange={handleChange}
         />
       </label>
-      <button className={"button-green"} onClick={handleSubmit}>
-        Save
-      </button>
+      <div className="center">
+        <button className={"btn-primary"} onClick={handleSubmit}>
+          Save
+        </button>
+      </div>
     </div>
   );
 };

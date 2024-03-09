@@ -1,6 +1,6 @@
 "use client";
 import { OfferController } from "@/controllers/offerController";
-import Image from "next/image";
+import styles from "./page.css";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
@@ -40,56 +40,40 @@ const OfferView = () => {
   }, []);
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          {offer.photos != undefined && offer.photos.length > 0
-            ? offer.photos.map((x) => {
-                return (
-                  <img
-                    src={`https://student.agh.edu.pl/~maswierc/object_files${x.path}`}
-                    alt={`Image of ${offer.name}`}
-                    width={500}
-                    height={500}
-                    layout="responsive"
-                  />
-                );
-              })
+    <div className={"container"}>
+      <div className={"product-details"}>
+        <div className={"product-images"}>
+          {offer.photos?.length > 0
+            ? offer.photos.map((x) => (
+                <img
+                  key={x.path}
+                  src={`https://student.agh.edu.pl/~maswierc/object_files${x.path}`}
+                  alt={`Image of ${offer.name}`}
+                  width={500}
+                  height={500}
+                  layout="responsive"
+                />
+              ))
             : ""}
+        </div>
+        <div className={"product-info"}>
           <h1>{offer.name}</h1>
           <p>Price: ${offer.price}</p>
           <p>Description: {offer.description}</p>
           <p>Quantity: {offer.quantity}</p>
-        </div>
-        <div className="product-page">
-          <h3>Specific Values:</h3>
-          <div>
-            {Object.entries(offer.valuelist).map((x) => {
-              x = x[1];
-              return (
+          <div className="product-page">
+            <h3>Specific Values:</h3>
+            <div>
+              {offer.valuelist?.map((x) => (
                 <p key={x.model_id}>
                   <b>{x.name}</b>: {x.value}
                 </p>
-              );
-            })}
+              ))}
+            </div>
           </div>
+          <div>{offer.desc}</div>
         </div>
-        <div>{offer.desc}</div>
       </div>
-
-      {/* <div>valuelist: {JSON.stringify(offer.valuelist)}</div> */}
     </div>
   );
 };
