@@ -1,9 +1,7 @@
 "use client";
 import SearchBox from "@/components/searchBox";
-import { GroupController } from "@/controllers/groupController";
-import { ProductValueController } from "@/controllers/productValueController";
-import { ProductValueModelController } from "@/controllers/productValueModelController";
 import { ProductController } from "@/controllers/productcontroller";
+import { calculateSHA256 } from "@/logic/hashing";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -19,7 +17,7 @@ const GroupList = () => {
         setGroupList(cachedData);
       }
 
-      var data = await ProductController.list();
+      var data = await ProductController.list(inputModel);
       data = data.data;
 
       if (data != undefined) {

@@ -1,3 +1,4 @@
+const { calculateSHA256 } = require("@/logic/hashing");
 const { baseApiUri } = require("./constants");
 
 class ProductController {
@@ -15,9 +16,13 @@ class ProductController {
     };
 
     var response = {};
+    var hash = calculateSHA256(raw);
     await fetch(baseApiUri + "/product/list", requestOptions)
       .then((response) => response.text())
-      .then((result) => (response = JSON.parse(result)))
+      .then((result) => {
+        localStorage.setItem(hash, result);
+        response = JSON.parse(result);
+      })
       .catch((error) => {
         response = error;
         console.error(error);
