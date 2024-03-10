@@ -13,7 +13,7 @@ const Page = () => {
       const inputModel = {
         random: true,
         filter: [],
-        rows: 30,
+        rows: 9,
         page: 0,
       };
 
@@ -49,11 +49,15 @@ const Page = () => {
               onClick={(e) => handleLinkRedirect(e, "/offer/page/" + offer.id)}
             >
               <h2>{offer.name}</h2>
-              <img
-                src={`https://student.agh.edu.pl/~maswierc/object_files${offer.photos[0]?.path}`}
-                alt={offer.name}
-                onClick={(e) => handleLinkRedirect(e, "/offer/" + offer.id)}
-              />
+              {offer.photos != null ? (
+                <img
+                  src={`https://student.agh.edu.pl/~maswierc/object_files${offer.photos[0]?.path}`}
+                  alt={offer.name}
+                  onClick={(e) => handleLinkRedirect(e, "/offer/" + offer.id)}
+                />
+              ) : (
+                ""
+              )}
               <p>Price: {offer.disc_price} </p>
             </div>
           ))}
