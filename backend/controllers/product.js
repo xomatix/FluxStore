@@ -17,23 +17,30 @@ class ProductController {
         }`;
       }
       var idsWhereQuery = "";
+      var idsWhereQueryInWith = "";
       if (
         typeof reqBody.ids == typeof [] &&
         reqBody.ids.length > 0 &&
         !isNaN(Number(reqBody.ids[0]))
       ) {
         idsWhereQuery = ` where pp.pp_id in (${reqBody.ids.join(",")})`;
+        idsWhereQueryInWith = ` where pp_id in (${reqBody.ids.join(",")})`;
       }
       var data = await DBquery(
-        `select pp.pp_id as id, pp.pp_name as name, pp.pp_code as code, pp.pp_price as price, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
-          `json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
-          `,json_agg( JSON_BUILD_OBJECT('id',pf.pf_id,'path',pf.pf_path,'flag',pf.pf_flag, 'is_main', pf.pf_flag&1<>0)) as photos ` +
+        `with valuelist as (
+          select pv.pp_id, json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valuelist
+           from p_value pv left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ${idsWhereQueryInWith} group by pv.pp_id
+          ), 
+          files as (
+          select pf.pp_id, json_agg( JSON_BUILD_OBJECT('id',pf.pf_id,'path',pf.pf_path,'flag',pf.pf_flag, 'is_main', pf.pf_flag&1<>0)) as photos
+           from p_file pf ${idsWhereQueryInWith} group by pf.pp_id
+          )` +
+          `select pp.pp_id as id, pp.pp_name as name, pp.pp_code as code, pp.pp_price as price, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, pp.pp_flag as flag, ` +
+          `vl.valuelist as valuelist, pf.photos as photos ` +
           `from p_product pp ` +
-          `left join p_value pv on (pp.pp_id=pv.pp_id) ` +
-          `left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
-          `left join p_file pf on (pf.pp_id=pp.pp_id) ` +
+          `left join valuelist vl on (vl.pp_id=pp.pp_id) ` +
+          `left join files pf on (pf.pp_id=pp.pp_id) ` +
           ` ${idsWhereQuery} ` +
-          `group by pp.pp_id ` +
           `${rowsPageQuery};`
       );
 

@@ -11,12 +11,14 @@ const SelectIdComponent = ({ onClickFunction, children, dataType }) => {
     async function fetchData() {
       var data = { data: [] };
       if (dataType == "product") {
-        data = await ProductController.list();
+        var inputModel = { product: true };
+        data = await ProductController.list(inputModel);
         data = data.data;
         setListData(data);
       }
       if (dataType == "group") {
-        data = await GroupController.list();
+        var inputModel = { group: true };
+        data = await GroupController.list(inputModel);
         data = data.data;
         setListData(data);
       }

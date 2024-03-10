@@ -18,6 +18,7 @@ class OfferController {
       }
       var preWhereQuery = this.generateWithPreQueries(reqBody);
       var postWhereQuery = this.genereateOfferWhereQuery(reqBody);
+      var whereIdsProductsQueryForWith = "";
       var idsWhereQuery = "";
       if (
         typeof reqBody.ids == typeof [] &&
@@ -36,17 +37,27 @@ class OfferController {
       ) {
         orderRandomQuery = "order by random()";
       }
+      if (preWhereQuery != "" && preWhereQuery.length > 0) {
+        whereIdsProductsQueryForWith =
+          " WHERE pp_id in (SELECT pp_id FROM subquery0)";
+      }
 
       var data = await DBquery(
         ` ${preWhereQuery} ` +
-          `select oo.oo_id as id, min(pp.pp_id) as product_id,min(pp.pp_price) as price, ROUND((min(pp.pp_price)*((100-oo.oo_discount)/100)),2) as disc_price,oo_discount as discount, min(pp.pp_name) as name, min(pp.pp_code) as code, min(pp.pp_desc) as desc , min(pp.pg_id) as group_id, min(pp.pp_quantity) as quantity, oo.oo_flag as flag, min(pp.pp_flag) as product_flag ` +
-          `,json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valueList ` +
-          `,json_agg( JSON_BUILD_OBJECT('id',pf.pf_id,'path',pf.pf_path,'flag',pf.pf_flag)) as photos ` +
+          `with valuelist as (
+          select pv.pp_id, json_agg( JSON_BUILD_OBJECT('model_id',pv.pvm_id ,'name',pvm.pvm_name ,'code',pvm.pvm_code ,'desc',pvm.pvm_desc, 'flag',pvm.pvm_flag ,'value',pv.pv_value)) as valuelist
+         from p_value pv  left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ${whereIdsProductsQueryForWith} group by pv.pp_id
+        ), 
+        files as (
+          select pf.pp_id, json_agg( JSON_BUILD_OBJECT('id',pf.pf_id,'path',pf.pf_path,'flag',pf.pf_flag, 'is_main', pf.pf_flag&1<>0)) as photos
+         from p_file pf ${whereIdsProductsQueryForWith} group by pf.pp_id
+        ) ` +
+          `select oo.oo_id as id, pp.pp_id as product_id, pp.pp_price as price, ROUND((pp.pp_price*((100-oo.oo_discount)/100)),2) as disc_price,oo_discount as discount, pp.pp_name as name, pp.pp_code as code, pp.pp_desc as desc , pp.pg_id as group_id, pp.pp_quantity as quantity, oo.oo_flag as flag, pp.pp_flag as product_flag ` +
+          `,vl.valuelist as valuelist, pf.photos as photos ` +
           `from p_product pp ` +
           `join o_offer oo on (pp.pp_id=oo.pp_id) ` +
-          `left join p_value pv on (pp.pp_id=pv.pp_id) ` +
-          `left join p_value_model pvm on (pv.pvm_id=pvm.pvm_id) ` +
-          `left join p_file pf on (pf.pp_id=pp.pp_id) ` +
+          `left join valuelist vl on (vl.pp_id=pp.pp_id) ` +
+          `left join files pf on (pf.pp_id=pp.pp_id) ` +
           ` ${idsWhereQuery} ` +
           ` ${preWhereQuery != "" || postWhereQuery != "" ? "where" : ""}` +
           ` ${postWhereQuery} ` +
@@ -56,7 +67,6 @@ class OfferController {
               ? "pp.pp_id in (select * from combined_subquery)"
               : ""
           } ` +
-          `group by oo.oo_discount, oo.oo_id ` +
           `${orderRandomQuery} ` +
           `${rowsPageQuery}; `
       );
@@ -178,7 +188,7 @@ class OfferController {
         reqBody.discount == null ||
         typeof Number(reqBody.discount) != typeof 0
       ) {
-        console.log("--------test :" + typeof Number(reqBody.discount));
+        // console.log("--------test :" + typeof Number(reqBody.discount));
         throw `no discount provided or not correct format (DECIMAL(3,2))`;
       }
 
