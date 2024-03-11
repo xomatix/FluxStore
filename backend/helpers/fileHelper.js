@@ -18,10 +18,9 @@ const sendFileToSftp = (filePath, fileName) => {
     .then(async () => {
       var remoteDir =
         baseSftpServerPath + `/object_files/${fileName.split("/")[0]}`;
-
       await sftp.mkdir(remoteDir, true);
       return await sftp._fastPut(
-        "C:\\Users\\asus\\Desktop\\code\\software_studio\\backend\\" + filePath,
+        ".\\" + filePath,
         baseSftpServerPath + `/object_files/${fileName}`
       );
     })
