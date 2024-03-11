@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    //\"ids\": [3,2],\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"raw": "{\r\n    \"ids\": [9,10],\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -175,7 +175,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"data\": {\r\n        \"group_id\":1\r\n    }\r\n}",
+					"raw": "{\r\n    \"data\": {\r\n        \"group_id\":2\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -283,7 +283,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    // \"ids\": [1],\r\n    \"filter\": [\r\n        {\"field\": \"name\",\"comparer\": \"ilike\", \"argument\": \"%dla%\"}\r\n        // {\"field\": \"price\",\"comparer\": \"<\", \"argument\": \"500\"},\r\n        // {\"field\": \"1\",\"comparer\": \"ilike\", \"argument\": \"%WHITE%\"}      \r\n        // {\"field\": \"1\",\"comparer\": \"ilike\", \"argument\": \"%WHITE%\"}       \r\n        // {\"field\": \"2\",\"comparer\": \"=\", \"argument\": \"45\"}       \r\n    ],\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
+					"raw": "{\r\n    // \"ids\": [5],\r\n    // \"random\": true,\r\n    \"filter\": [\r\n        {\"field\": \"group_id\",\"comparer\": \"=\", \"argument\": \"2\"}\r\n        //{\"field\": \"price\",\"comparer\": \"<\", \"argument\": \"500\"}\r\n        // {\"field\": \"1\",\"comparer\": \"ilike\", \"argument\": \"%WHITE%\"}      ,\r\n        // {\"field\": \"1\",\"comparer\": \"ilike\", \"argument\": \"%WHITE%\"}       \r\n        // {\"field\": \"2\",\"comparer\": \"=\", \"argument\": \"45\"}       \r\n    ],\r\n    \"rows\":30,\r\n    \"page\":0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -439,6 +439,60 @@
 					"path": [
 						"file",
 						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 11\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/file/delete",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"file",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":11\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/product/delete",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"delete"
 					]
 				}
 			},
