@@ -6,6 +6,7 @@ import { ProductValueModelController } from "@/controllers/productValueModelCont
 import { ProductController } from "@/controllers/productcontroller";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import "./page.css";
 
 const ProductUpdate = () => {
   const [product, setProductData] = useState({
@@ -16,6 +17,7 @@ const ProductUpdate = () => {
     group_id: 0,
     quantity: 0,
     flag: 0,
+    photos: [],
   });
   const [formData, setFormData] = useState({
     id: 0,
@@ -24,6 +26,7 @@ const ProductUpdate = () => {
     flag: 0,
   });
   const [valueModelData, setValueModelData] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
   const params = useParams();
   useEffect(() => {
     if (
@@ -39,7 +42,6 @@ const ProductUpdate = () => {
       var data = await ProductController.list(inputModel);
       data = data.data[0];
       if (data == null || data == undefined) return;
-      var product_id = data.id;
       setProductData({
         id: data.id,
         name: data.name,
@@ -49,6 +51,7 @@ const ProductUpdate = () => {
         desc: data.desc,
         group_id: data.group_id,
         flag: data.flag,
+        photos: data.photos,
       });
 
       const groupInputModel = {
@@ -83,7 +86,7 @@ const ProductUpdate = () => {
       vmData.forEach((valueModelElement) => {
         var isFilled = false;
         filledValues.forEach((valueElement) => {
-          valueElement.product_id = product_id;
+          valueElement.product_id = product.id;
           if (valueModelElement.id == valueElement.model_id) {
             isFilled = true;
           }
@@ -133,13 +136,21 @@ const ProductUpdate = () => {
         var vmInputModel = {
           ...element,
         };
-        // console.log(vmInputModel);
         await ProductValueController.add(vmInputModel);
       });
 
       window.location.href = "/product/update/" + response;
-    }
-    console.log(product);
+      try {
+        const response = await FileController.add(selectedFile, Number(product.id));
+        const newImage = response.data;
+        setProductData(prevState => ({
+          ...prevState,
+          images: [...(prevState.images || []), newImage]
+        }));
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+      }
+    };
   };
 
   const handleGroupRedirect = (e) => {
@@ -148,25 +159,23 @@ const ProductUpdate = () => {
     window.open(`/group/${formData.id}`, "_blank", "noopener,noreferrer");
   };
 
-  const fileChange = async (e) => {
-    var file = e.target.files[0];
-    if (
-      params.product_id == null ||
-      params.product_id == undefined ||
-      isNaN(params.product_id)
-    )
-      return;
+  const [previewImage, setPreviewImage] = useState(null);
 
-    if (file == undefined || file == null || file.name == "") {
-      return;
+  const fileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const fileUrl = URL.createObjectURL(file);
+      setPreviewImage(fileUrl);
+      setSelectedFile(file);
     }
-    var product_id = Number(params.product_id);
-    await FileController.add(file, product_id);
   };
+
+
+
 
   return (
     <form onSubmit={handleSubmit} className={"container"}>
-      {/* <input type="file" onChange={fileChange}></input> */}
+
       <label>
         <p>Name:</p>
         <input
@@ -228,7 +237,6 @@ const ProductUpdate = () => {
           onClick={handleGroupRedirect}
         />
       </label>
-
       <h3>
         <b>Product Values</b>
       </h3>
@@ -247,6 +255,24 @@ const ProductUpdate = () => {
           </div>
         ))}
       </div>
+      <h3>
+        <b>Photos</b>
+      </h3>
+      <input type="file" onChange={fileChange} />
+      <div className="offers-list">
+        {product.photos.map((photo, index) => (
+          <div key={index} className="offer-item">
+            <img src={`https://student.agh.edu.pl/~maswierc/object_files/${photo.path}`} alt={`Product Image ${index + 1}`} />
+          </div>
+        ))}
+        {previewImage && (
+          <div className="offer-item">
+            <img src={previewImage} alt="Selected Image" />
+          </div>
+        )}
+      </div>
+
+
       <div className={"center"}>
         <button className="btn-primary" type="submit">
           Update Product
@@ -254,6 +280,7 @@ const ProductUpdate = () => {
       </div>
     </form>
   );
+
 };
 
 export default ProductUpdate;
