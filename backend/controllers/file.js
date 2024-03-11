@@ -95,7 +95,7 @@ class FileController {
       response.status(200).send(data);
       setTimeout(() => {
         deleteFile(request.file.path);
-      }, 500);
+      }, 5000);
     } catch (error) {
       console.error(error);
       response.status(500).send(error);

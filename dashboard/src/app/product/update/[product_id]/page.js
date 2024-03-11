@@ -1,4 +1,5 @@
 "use client";
+import { FileController } from "@/controllers/fileController";
 import { GroupController } from "@/controllers/groupController";
 import { ProductValueController } from "@/controllers/productValueController";
 import { ProductValueModelController } from "@/controllers/productValueModelController";
@@ -147,8 +148,25 @@ const ProductUpdate = () => {
     window.open(`/group/${formData.id}`, "_blank", "noopener,noreferrer");
   };
 
+  const fileChange = async (e) => {
+    var file = e.target.files[0];
+    if (
+      params.product_id == null ||
+      params.product_id == undefined ||
+      isNaN(params.product_id)
+    )
+      return;
+
+    if (file == undefined || file == null || file.name == "") {
+      return;
+    }
+    var product_id = Number(params.product_id);
+    await FileController.add(file, product_id);
+  };
+
   return (
     <form onSubmit={handleSubmit} className={"container"}>
+      {/* <input type="file" onChange={fileChange}></input> */}
       <label>
         <p>Name:</p>
         <input
